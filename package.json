@@ -11,11 +11,11 @@
   },
   "lint-staged": {
     "server/**/*.js": [
-      "npm run eslint -- --fix ",
+      "npm run eslint -- --fix",
       "git add"
     ],
     "web/**/*.js": [
-      "npm run eslint -- --fix ",
+      "npm run eslint -- --fix",
       "git add"
     ]
   },
