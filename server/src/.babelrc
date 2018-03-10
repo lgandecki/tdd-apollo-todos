@@ -6,7 +6,7 @@
         [
           "module-rewrite-with-root",
           {
-            "replaceFunc": "./src/testHelpers/replace-for-testing.js"
+            "replaceFunc": "./src/testHelpers/replace-for-testing"
           }
         ]
       ]

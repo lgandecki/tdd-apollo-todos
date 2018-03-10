@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint"
+    "test": "BABEL_ENV=serverTest jest",
+    "start": "NODE_PATH='src' babel-node src/startup.js"
   },
   "author": "",
   "license": "ISC",
