@@ -41,7 +41,9 @@ jobs:
           paths:
             - server/node_modules
 
-      - run: npm test
+      - run:
+          working_directory: server/
+          command: npm test
 
 ### WEB PACKAGE
       - restore_cache:
@@ -58,7 +60,9 @@ jobs:
           paths:
             - web/node_modules
 
-      - run: npm test
+      - run:
+          working_directory: web/
+          command: npm test
 
       - run: npm run eslintAll
 
