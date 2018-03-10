@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:9.3.0
+      - image: cypress/base:8
 
     working_directory: ~/repo
 
