@@ -76,11 +76,12 @@ jobs:
           name: Start up the Web Client
           working_directory: web/
           command: npm start
+          background: true
 
 ### ALL TOGETHER
+      - run: npm run eslintAll
+
       - run:
           name: End to end test
           command: npm test
-
-      - run: npm run eslintAll
 
