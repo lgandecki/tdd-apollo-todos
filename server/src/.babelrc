@@ -1,0 +1,15 @@
+{
+  "plugins": ["transform-es2015-modules-commonjs"],
+  "env": {
+    "serverTest": {
+      "plugins": [
+        [
+          "module-rewrite-with-root",
+          {
+            "replaceFunc": "./src/testHelpers/replace-for-testing.js"
+          }
+        ]
+      ]
+    }
+  }
+}

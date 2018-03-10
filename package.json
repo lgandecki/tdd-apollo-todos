@@ -5,19 +5,34 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint",
     "makeServerEslintHappy": "pushd ./server; npm run eslint -- --fix",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "server/**/*.js": [
-      "npm run makeServerEslintHappy -- ",
+      "npm run eslint -- --fix ",
+      "git add"
+    ],
+    "web/**/*.js": [
+      "npm run eslint -- --fix ",
       "git add"
     ]
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.7.0",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0"
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
   }
 }
