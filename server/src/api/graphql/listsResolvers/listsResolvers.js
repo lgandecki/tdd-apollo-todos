@@ -12,6 +12,9 @@ const lists = [
 ];
 export default {
   Query: {
-    Lists: () => lists
+    Lists: (_, args, context) => {
+      console.log("Gandecki context", context);
+      return lists;
+    }
   }
 };
