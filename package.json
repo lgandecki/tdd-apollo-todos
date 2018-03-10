@@ -1,0 +1,23 @@
+{
+  "name": "todos-apollo-testing",
+  "version": "1.0.0",
+  "description": "Wrapper for all-thing todos-apollo, mostly for testing purposes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "makeServerEslintHappy": "pushd ./server; npm run eslint -- --fix",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "server/**/*.js": [
+      "npm run makeServerEslintHappy -- ",
+      "git add"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0"
+  }
+}
