@@ -14,10 +14,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Install wait-on
-          command: npx wait-on
-
       # Download and cache dependencies
       - restore_cache:
           keys:
