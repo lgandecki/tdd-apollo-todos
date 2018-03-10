@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint",
-    "makeServerEslintHappy": "pushd ./server; npm run eslint -- --fix",
+    "eslintAll": "eslint server/src/**/*.js web/src/**/*.js",
+    "cleanAll": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
+    "buildAll": "npm install && pushd web && npm install && pushd ../server",
     "precommit": "lint-staged"
   },
   "lint-staged": {
