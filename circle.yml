@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Install wait-on
-          command: npm install -g wait-on
+          command: npx wait-on
 
       # Download and cache dependencies
       - restore_cache:
@@ -74,7 +74,7 @@ jobs:
 
       - run:
           name: Wait for the Server to start up
-          command: wait-on "http://localhost:8080/graphiql" -t 30000
+          command: npx wait-on "http://localhost:8080/graphiql" -t 30000
 
       - run:
           name: Start up the Web Client
