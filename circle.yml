@@ -14,6 +14,10 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install wait-on
+          command: npm install -g wait-on
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -40,7 +44,11 @@ jobs:
           key: npm-server-deps-{{ checksum "./server/package.json" }}
           paths:
             - server/node_modules
-
+      - run:
+          name: Start up the server
+          working_directory: server/
+          command: npm start
+          background: true
       - run:
           working_directory: server/
           command: npm test
@@ -62,6 +70,20 @@ jobs:
 
       - run:
           working_directory: web/
+          command: npm test
+
+      - run:
+          name: Wait for the Server to start up
+          command: wait-on "http://localhost:8080/graphiql" -t 30000
+
+      - run:
+          name: Start up the Web Client
+          working_directory: web/
+          command: npm start
+
+### ALL TOGETHER
+      - run:
+          name: End to end test
           command: npm test
 
       - run: npm run eslintAll

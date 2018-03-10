@@ -1,21 +1,39 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import gql from "graphql-tag";
+import { graphql } from "react-apollo";
+import PropTypes from "prop-types";
 import "./App.css";
 
 class App extends Component {
   render() {
+    const { loading, Lists } = this.props.data;
+    if (loading) {
+      return <div data-cy="loading">Loading...</div>;
+    }
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {Lists.map(list => <div key={list.name}>{list.name}</div>)}
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  data: PropTypes.shape({
+    loading: PropTypes.bool,
+    Lists: PropTypes.array
+  })
+};
+
+App.defaultProps = {
+  data: { loading: true }
+};
+
+export default graphql(gql`
+  query TodoAppQuery {
+    Lists {
+      name
+      incompleteCount
+    }
+  }
+`)(App);
