@@ -46,7 +46,6 @@ jobs:
           command: npm test
       - run:
           name: Setup the database data
-          working_directory: ~/TheBrain2.0/
           command: npm run createDefaultDB
       - run:
            name: Start up the server
