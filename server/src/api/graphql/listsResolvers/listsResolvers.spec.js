@@ -2,7 +2,6 @@
 import gql from "graphql-tag";
 import gqlClient from "../../../testHelpers/gqlClient";
 import { dbConnector, dbClient } from "../../repositories/MongoRepository";
-import { listsRepository } from "../../repositories/ListsRepository";
 import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
 
 let dbInstance;
@@ -39,5 +38,4 @@ test("returns all lists", async () => {
     name: "second list",
     incompleteCount: 4
   });
-  await listsRepository.db;
 });

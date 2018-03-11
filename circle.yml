@@ -43,7 +43,7 @@ jobs:
             - server/node_modules
       - run:
           working_directory: server/
-          command: npm test
+          command: npm test -- --forceExit
       - run:
           name: Setup the database data
           command: npm run createDefaultDB
