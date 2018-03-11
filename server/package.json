@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "BABEL_ENV=serverTest jest",
-    "start": "NODE_PATH='src' babel-node src/startup.js",
-    "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo"
+    "start": "NODE_PATH='src' babel-node src/startup.js"
   },
   "author": "",
   "license": "ISC",

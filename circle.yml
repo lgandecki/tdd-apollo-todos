@@ -42,13 +42,17 @@ jobs:
           paths:
             - server/node_modules
       - run:
-          name: Start up the server
-          working_directory: server/
-          command: npm start
-          background: true
-      - run:
           working_directory: server/
           command: npm test
+      - run:
+          name: Setup the database data
+          working_directory: ~/TheBrain2.0/
+          command: npm run createDefaultDB
+      - run:
+           name: Start up the server
+           working_directory: server/
+           command: npm start
+           background: true
 
 ### WEB PACKAGE
       - restore_cache:

@@ -1,6 +1,8 @@
 import * as MongoClient from "mongodb";
 
 let dbInstance = null;
+// eslint-disable-next-line import/no-mutable-exports
+let dbClient = null; // this is for testing purposes as we don't have a different way to close connection
 let dbURI;
 const collectionInitQueue = [];
 
@@ -15,15 +17,17 @@ switch (process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()) {
 }
 
 export async function dbConnector() {
-  const client = await MongoClient.connect(dbURI).catch(e => {
+  dbClient = await MongoClient.connect(dbURI).catch(e => {
     throw new Error(`error connecting to db ${e}`);
   });
-  dbInstance = client.db("todosApollo");
+  dbInstance = dbClient.db("todosApollo");
   collectionInitQueue.forEach(collectionInitCallback =>
     collectionInitCallback()
   );
   return dbInstance;
 }
+
+export { dbClient };
 
 export class MongoRepository {
   constructor() {
