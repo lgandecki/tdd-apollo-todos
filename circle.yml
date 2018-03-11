@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:9.3.0
+      - image: cypress/base:8
 
     working_directory: ~/repo
 
@@ -40,7 +40,11 @@ jobs:
           key: npm-server-deps-{{ checksum "./server/package.json" }}
           paths:
             - server/node_modules
-
+      - run:
+          name: Start up the server
+          working_directory: server/
+          command: npm start
+          background: true
       - run:
           working_directory: server/
           command: npm test
@@ -64,5 +68,20 @@ jobs:
           working_directory: web/
           command: npm test
 
+      - run:
+          name: Wait for the Server to start up
+          command: npx wait-on "http://localhost:8080/graphiql" -t 30000
+
+      - run:
+          name: Start up the Web Client
+          working_directory: web/
+          command: npm start
+          background: true
+
+### ALL TOGETHER
       - run: npm run eslintAll
+
+      - run:
+          name: End to end test
+          command: npm test
 
