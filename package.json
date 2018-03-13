@@ -9,6 +9,9 @@
     "eslintAll": "eslint server/src/**/*.js web/src/**/*.js",
     "cleanAll": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
     "buildAll": "npm install && pushd web && npm install && pushd ../server",
+    "testAll": "BABEL_ENV=test NODE_ENV=TESTING jest --projects server web",
+    "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
+    "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -19,12 +22,17 @@
     "web/**/*.js": [
       "npm run eslint -- --fix",
       "git add"
+    ],
+    "*.js": [
+      "npm run testAll -- --bail --findRelatedTests"
     ]
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "cypress": "^2.1.0",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
@@ -36,6 +44,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
     "husky": "^0.14.3",
+    "jest": "^22.4.2",
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1"
   }

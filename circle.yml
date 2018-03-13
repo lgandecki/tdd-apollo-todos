@@ -8,6 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: cypress/base:8
+      - image: circleci/mongo:3
 
     working_directory: ~/repo
 
@@ -41,13 +42,16 @@ jobs:
           paths:
             - server/node_modules
       - run:
-          name: Start up the server
           working_directory: server/
-          command: npm start
-          background: true
+          command: npm test -- --forceExit
       - run:
-          working_directory: server/
-          command: npm test
+          name: Setup the database data
+          command: npm run createDefaultDB
+      - run:
+           name: Start up the server
+           working_directory: server/
+           command: npm start
+           background: true
 
 ### WEB PACKAGE
       - restore_cache:

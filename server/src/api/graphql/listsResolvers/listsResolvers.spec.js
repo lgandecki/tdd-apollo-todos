@@ -1,6 +1,19 @@
 /* eslint-env jest */
 import gql from "graphql-tag";
 import gqlClient from "../../../testHelpers/gqlClient";
+import { dbConnector, dbClient } from "../../repositories/MongoRepository";
+import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
+
+let dbInstance;
+beforeEach(async () => {
+  dbInstance = await dbConnector();
+  await dbInstance.dropDatabase();
+  await getListsWithDefaults();
+});
+
+afterEach(async () => {
+  await dbClient.close();
+});
 
 test("returns all lists", async () => {
   const result = await gqlClient().query({
@@ -14,7 +27,6 @@ test("returns all lists", async () => {
       }
     `
   });
-
   const lists = result.data.Lists;
   expect(lists[0]).toMatchObject({
     _id: "firstId",

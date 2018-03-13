@@ -1,12 +1,13 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
 import schema from "./api/graphql/listsResolvers/schema";
+import { dbConnector } from "./api/repositories/MongoRepository";
 
 const { graphqlExpress, graphiqlExpress } = require("graphql-server-express");
 
-const createApp = () => {
+const createApp = async () => {
   const app = express();
-
+  await dbConnector();
   app.use(cors());
 
   app.use(urlencoded({ extended: true }));

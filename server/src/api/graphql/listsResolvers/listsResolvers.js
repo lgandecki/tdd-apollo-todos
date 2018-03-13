@@ -1,17 +1,7 @@
-const lists = [
-  {
-    _id: "firstId",
-    name: "first list",
-    incompleteCount: 0
-  },
-  {
-    _id: "secondId",
-    name: "second list",
-    incompleteCount: 4
-  }
-];
+import { listsRepository } from "../../repositories/ListsRepository";
+
 export default {
   Query: {
-    Lists: () => lists
+    Lists: () => listsRepository.getLists()
   }
 };
