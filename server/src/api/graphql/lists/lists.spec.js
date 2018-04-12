@@ -2,11 +2,15 @@
 import gql from "graphql-tag";
 import gqlClient from "../../../testHelpers/gqlClient";
 import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
+import listsResolvers from "./listsResolvers";
 
 test("returns all lists", async () => {
   const listsRepository = await getListsWithDefaults();
 
-  const result = await gqlClient({ listsRepository }).query({
+  const result = await gqlClient({
+    context: { listsRepository },
+    resolvers: [listsResolvers]
+  }).query({
     query: gql`
       query {
         Lists {
