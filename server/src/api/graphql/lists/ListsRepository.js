@@ -5,10 +5,7 @@ export class ListsRepository extends MongoRepository {
     this.listsCollection = this.db.collection("courses");
   }
 
-  async getLists() {
-    const data = await this.listsCollection.find().toArray();
-    console.log("Gandecki data", data);
-
+  getLists() {
     return this.listsCollection.find().toArray();
   }
 }

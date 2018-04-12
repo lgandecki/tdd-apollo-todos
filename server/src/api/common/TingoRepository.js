@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const collection = require("tingodb-promise");
 
-export class MongoRepository {
+export class TingoRepository {
   constructor() {
     this.db = { collection };
     this.init();
