@@ -5,6 +5,7 @@ module.exports = wallaby => ({
   testFramework: "jest",
   files: [
     "server/src/**/*.js",
+    "server/src/**/*.graphql",
     "server/package.json",
     "server/testHelpers/**/*.js",
     "server/jest.config.js",

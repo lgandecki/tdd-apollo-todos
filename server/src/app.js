@@ -1,7 +1,8 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
-import schema from "./api/graphql/listsResolvers/schema";
-import { dbConnector } from "./api/repositories/MongoRepository";
+import schema from "./api/graphql/schema";
+import { dbConnector } from "./api/common/MongoRepository";
+import { listsRepository } from "./api/graphql/lists/ListsRepository";
 
 const { graphqlExpress, graphiqlExpress } = require("graphql-server-express");
 
@@ -16,7 +17,10 @@ const createApp = async () => {
   app.use(
     "/graphql",
     graphqlExpress(() => ({
-      schema
+      schema,
+      context: {
+        listsRepository
+      }
     }))
   );
   app.use(

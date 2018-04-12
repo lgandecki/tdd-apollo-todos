@@ -2,7 +2,7 @@
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { SchemaLink } from "apollo-link-schema";
-import schema from "../api/graphql/listsResolvers/schema";
+import schema from "../api/graphql/schema";
 
 export default function gqlClient(context) {
   return new ApolloClient({

@@ -1,0 +1,9 @@
+type List {
+    _id: String
+    name: String
+    incompleteCount: Int
+}
+
+type Query {
+    Lists: [List]
+}

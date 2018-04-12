@@ -1,5 +1,5 @@
 import getListsWithDefaults from "./getListsWithDefaults";
-import { dbConnector } from "../../server/src/api/repositories/MongoRepository";
+import { dbConnector } from "../../server/src/api/common/MongoRepository";
 
 const createDefaultDb = async () => {
   const db = await dbConnector();

@@ -1,4 +1,4 @@
-import { ListsRepository } from "../../server/src/api/repositories/ListsRepository";
+import { ListsRepository } from "../../server/src/api/graphql/lists/ListsRepository";
 
 export default async function getListsWithDefaults() {
   const listsRepository = new ListsRepository();
@@ -14,3 +14,4 @@ export default async function getListsWithDefaults() {
   });
   return listsRepository;
 }
+

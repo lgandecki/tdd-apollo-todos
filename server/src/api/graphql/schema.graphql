@@ -1,0 +1,6 @@
+# import * from "lists/lists.graphql"
+
+schema {
+    query: Query
+    mutation: Mutation
+}

@@ -1,8 +1,7 @@
 import * as MongoClient from "mongodb";
 
 let dbInstance = null;
-// eslint-disable-next-line import/no-mutable-exports
-let dbClient = null; // this is for testing purposes as we don't have a different way to close connection
+let dbClient = null;
 let dbURI;
 const collectionInitQueue = [];
 
@@ -27,8 +26,6 @@ export async function dbConnector() {
   return dbInstance;
 }
 
-export { dbClient };
-
 export class MongoRepository {
   constructor() {
     if (dbInstance) {
@@ -41,8 +38,8 @@ export class MongoRepository {
       });
     }
   }
-
-  static init() {
+  // eslint-disable-next-line class-methods-use-this
+  init() {
     throw Error("Not yet implemented");
   }
 }

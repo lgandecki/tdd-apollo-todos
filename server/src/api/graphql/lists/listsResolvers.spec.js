@@ -1,22 +1,12 @@
 /* eslint-env jest */
 import gql from "graphql-tag";
 import gqlClient from "../../../testHelpers/gqlClient";
-import { dbConnector, dbClient } from "../../repositories/MongoRepository";
 import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
 
-let dbInstance;
-beforeEach(async () => {
-  dbInstance = await dbConnector();
-  await dbInstance.dropDatabase();
-  await getListsWithDefaults();
-});
-
-afterEach(async () => {
-  await dbClient.close();
-});
-
 test("returns all lists", async () => {
-  const result = await gqlClient().query({
+  const listsRepository = await getListsWithDefaults();
+
+  const result = await gqlClient({ listsRepository }).query({
     query: gql`
       query {
         Lists {
@@ -27,13 +17,14 @@ test("returns all lists", async () => {
       }
     `
   });
-  const lists = result.data.Lists;
-  expect(lists[0]).toMatchObject({
+
+  const { Lists } = result.data;
+  expect(Lists[0]).toMatchObject({
     _id: "firstId",
     name: "first list",
     incompleteCount: 0
   });
-  expect(lists[1]).toMatchObject({
+  expect(Lists[1]).toMatchObject({
     _id: "secondId",
     name: "second list",
     incompleteCount: 4
