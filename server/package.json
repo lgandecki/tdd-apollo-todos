@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "BABEL_ENV=serverTest jest",
+    "test": "BABEL_ENV=test jest",
     "start": "NODE_PATH='src' babel-node src/startup.js"
   },
   "author": "",
