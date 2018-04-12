@@ -1,9 +1,13 @@
-/* eslint-disable global-require */
-// eslint-disable-next-line import/no-mutable-exports
+/* eslint-disable global-require,prefer-destructuring, import/no-mutable-exports */
 let MongoRepository;
+let dbConnector;
+
 if (process.env.BABEL_ENV === "test") {
-  MongoRepository = require("./TingoRepository").TingoRepository;
+  const tingo = require("./TingoRepository");
+  MongoRepository = tingo.TingoRepository;
 } else {
-  MongoRepository = require("./RealMongoRepository").RealMongoRepository;
+  const real = require("./RealMongoRepository");
+  MongoRepository = real.RealMongoRepository;
+  dbConnector = real.dbConnector;
 }
-export { MongoRepository };
+export { MongoRepository, dbConnector };
