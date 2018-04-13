@@ -8,7 +8,9 @@ import merge from "lodash/merge";
 
 export default function gqlClient({ context, resolvers = [] }) {
   const schema = makeExecutableSchema({
-    typeDefs: importSchema(`${__dirname}/../api/graphql/schema.graphql`),
+    typeDefs: importSchema(
+      `${__dirname}/../../server/src/api/graphql/schema.graphql`
+    ),
     resolvers: merge({}, ...resolvers)
   });
   return new ApolloClient({
