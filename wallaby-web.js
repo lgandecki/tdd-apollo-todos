@@ -4,8 +4,13 @@ module.exports = wallaby => ({
     "web/src/**/*.js",
     "!web/src/**/*.test.js",
     "server/src/**/*.js",
+    "server/src/**/*.graphql",
     "!server/src/**/*.spec.js",
-    "testing/web/jest.config.js"
+    "testing/web/jest.config.js",
+    "testing/web/integration/**/*.js",
+    "!testing/web/integration/**/*.spec.js",
+    "testing/fileMock.js",
+    "testing/common/**/*.js"
   ],
   tests: ["testing/web/integration/*.spec.js"],
   compilers: { "**/*.js": wallaby.compilers.babel() },
