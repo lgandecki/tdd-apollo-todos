@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import gql from "graphql-tag";
-import gqlClient from "../../../testHelpers/gqlClient";
-import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
+import gqlClient from "todos-apollo-testing/testing/common/gqlClient";
+import getListsWithDefaults from "todos-apollo-testing/testing/common/getListsWithDefaults";
 import listsResolvers from "./listsResolvers";
 
 test("returns all lists", async () => {
