@@ -8,7 +8,7 @@
     "eslint": "eslint",
     "eslintAll": "eslint server/src/**/*.js web/src/**/*.js shared/graphql/**/*.js",
     "cleanAll": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
-    "buildAll": "npm install && pushd web && npm install && pushd ../server && npm install",
+    "buildAll": "npm install && pushd shared && npm install && pushd ../web && npm install && pushd ../server && npm install",
     "testAll": "BABEL_ENV=test NODE_ENV=TESTING jest --projects server web",
     "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
     "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",

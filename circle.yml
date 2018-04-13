@@ -27,6 +27,21 @@ jobs:
             - node_modules
           key: v1-test-dependencies-{{ checksum "package.json" }}
 
+### SHARED PACKAGE
+      - restore_cache:
+          keys:
+            - npm-server-deps-{{ checksum "./shared/package.json" }}
+
+      - run:
+          name: Install shared related packages
+          working_directory: shared/
+          command: npm install
+
+      - save_cache:
+          key: npm-server-deps-{{ checksum "./shared/package.json" }}
+          paths:
+            - shared/node_modules
+
 ### SERVER PACKAGE
       - restore_cache:
           keys:
