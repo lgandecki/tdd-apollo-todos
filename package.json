@@ -4,17 +4,20 @@
   "description": "Wrapper for all-thing todos-apollo, mostly for testing purposes",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run",
     "eslint": "eslint",
-    "eslintAll": "eslint server/src/**/*.js web/src/**/*.js shared/graphql/**/*.js",
-    "cleanAll": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
-    "buildAll": "npm install && pushd shared && npm install && pushd ../web && npm install && pushd ../server && npm install",
-    "testAll": "BABEL_ENV=test NODE_ENV=TESTING jest --projects web server testing/web testing/mobile",
+    "eslint:all": "eslint server/src/**/*.js web/src/**/*.js shared/graphql/**/*.js",
+    "clean:all": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
+    "install:all": "npm install && pushd shared && npm install && pushd ../web && npm install && pushd ../server && npm install",
     "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
     "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",
-    "precommit": "npm run generateSchema && git add ./schema.graphql && npm run eslintAll && lint-staged",
+    "precommit": "npm run generateSchema && git add ./schema.graphql && npm run eslint:all && lint-staged",
     "generateSchema": "node testing/generateSchema.js > ./schema.graphql",
-    "mobileE2eTest": "pushd mobile && ../node_modules/.bin/detox test -l verbose -c ios.sim ../testing/mobile/e2e/another.test.js"
+    "test:e2e:mobile": "pushd mobile && ../node_modules/.bin/detox test -l verbose -c ios.sim ../testing/mobile/e2e/another.test.js",
+    "test:e2e:mobile:local": "npm run mobile:e2e -- --reuse",
+    "test:e2e:web": "cypress run",
+    "test:e2e:web:local": "cypress open",
+    "test:integration:all": "BABEL_ENV=test NODE_ENV=TESTING jest --projects web server testing/web testing/mobile",
+    "test:integration:watch": "npm run test:integration:all -- --watch"
   },
   "lint-staged": {
     "server/**/*.js": [
@@ -30,7 +33,7 @@
       "git add"
     ],
     "*.js": [
-      "npm run testAll -- --bail --findRelatedTests"
+      "npm run test:integration:all -- --bail --findRelatedTests"
     ]
   },
   "author": "",
