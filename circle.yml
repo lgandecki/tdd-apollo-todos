@@ -106,7 +106,7 @@ jobs:
             - mobile/node_modules
 
 ### ALL TOGETHER
-      - run: npm run eslintAll
+      - run: npm run eslint:all
 
       - run:
           name: Integration test for web/mobile/server
