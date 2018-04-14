@@ -2,11 +2,11 @@
 import React from "react";
 import { render, wait } from "react-testing-library";
 import { ApolloProvider } from "react-apollo";
-import PureApp from "/web/src/scenes/App/PureApp";
-import App from "/web/src/scenes/App/App";
-import listsResolvers from "/server/src/api/graphql/lists/listsResolvers";
-import gqlClient from "/testing/common/gqlClient";
-import getListsWithDefaults from "/testing/common/getListsWithDefaults";
+import PureApp from "../../../web/src/scenes/App/PureApp";
+import App from "../../../web/src/scenes/App/App";
+import listsResolvers from "../../../server/src/api/graphql/lists/listsResolvers";
+import gqlClient from "../../../testing/common/gqlClient";
+import getListsWithDefaults from "../../../testing/common/getListsWithDefaults";
 
 test("Rendering the pure component", () => {
   const { getByText } = render(<PureApp />);

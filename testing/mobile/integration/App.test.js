@@ -3,8 +3,8 @@ import React from "react";
 import { render, wait } from "react-testing-library";
 import { ApolloProvider } from "react-apollo";
 
-import listsResolvers from "/server/src/api/graphql/lists/listsResolvers";
-import AppWithApollo from "/mobile/AppWithApollo";
+import listsResolvers from "../../..//server/src/api/graphql/lists/listsResolvers";
+import AppWithApollo from "../../../mobile/AppWithApollo";
 import getListsWithDefaults from "../../common/getListsWithDefaults";
 import gqlClient from "../../common/gqlClient";
 

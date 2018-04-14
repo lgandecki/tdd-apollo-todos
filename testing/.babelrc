@@ -1,7 +1,4 @@
 {
-  "plugins": [
-    "babel-root-slash-import"
-  ],
   "presets": [
     "react",
     ["env", {
