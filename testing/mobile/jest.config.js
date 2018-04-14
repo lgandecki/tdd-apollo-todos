@@ -6,7 +6,7 @@ module.exports = {
     platforms: ["android", "ios", "native"],
     providesModuleNodeModules: ["react-native"]
   },
-  testMatch: ["<rootDir>/testing/mobile/integration/App.test.js"],
+  testMatch: ["<rootDir>/testing/mobile/integration/**/*.test.js"],
   moduleNameMapper: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|png|psd|svg|webp)$":
       "RelativeImageStub",

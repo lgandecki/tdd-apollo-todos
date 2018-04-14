@@ -13,7 +13,8 @@
     "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
     "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",
     "precommit": "npm run generateSchema && git add ./schema.graphql && npm run eslintAll && lint-staged",
-    "generateSchema": "node testing/generateSchema.js > ./schema.graphql"
+    "generateSchema": "node testing/generateSchema.js > ./schema.graphql",
+    "mobileE2eTest": "pushd mobile && ../node_modules/.bin/detox test -l verbose -c ios.sim ../testing/mobile/e2e/another.test.js"
   },
   "lint-staged": {
     "server/**/*.js": [
@@ -44,6 +45,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "cypress": "^2.1.0",
+    "detox": "^7.0.0",
+    "detox-expo-helpers": "^0.2.0",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
