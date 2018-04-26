@@ -11,9 +11,14 @@ module.exports = {
     "graphql-next/template-strings": ["error"],
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 1,
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "to" ]
-    }]
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        components: ["Link"],
+        specialLink: ["to"]
+      }
+    ],
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/click-events-have-key-events": 0
   }
 };
