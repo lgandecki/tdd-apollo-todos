@@ -54,6 +54,7 @@
     "cypress": "^2.1.0",
     "detox": "^7.0.0",
     "detox-expo-helpers": "^0.2.0",
+    "dom-testing-library": "^1.10.0",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",

@@ -1,9 +1,14 @@
 type List {
-    _id: String
-    name: String
-    incompleteCount: Int
+  _id: String
+  name: String
+  incompleteCount: Int
 }
 
 type Query {
-    Lists: [List]
+  Lists: [List]
+}
+
+type Mutation {
+  AddList(ListName: String!): List
+  RemoveList(ListName: String!): String
 }
