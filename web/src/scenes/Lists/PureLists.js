@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const PureApp = props => {
+const PureLists = props => {
   const { loading, Lists } = props.data;
   if (loading) {
     return <div data-cy="loading">Loading...</div>;
@@ -13,15 +13,15 @@ const PureApp = props => {
   );
 };
 
-PureApp.propTypes = {
+PureLists.propTypes = {
   data: PropTypes.shape({
     loading: PropTypes.bool,
     Lists: PropTypes.array
   })
 };
 
-PureApp.defaultProps = {
+PureLists.defaultProps = {
   data: { loading: true }
 };
 
-export default PureApp;
+export default PureLists;

@@ -38,7 +38,7 @@ describe("Example", async () => {
   it(
     "should have welcome screen",
     async () => {
-      const driver = await getADriver();
+      await getADriver();
     },
     40000
   );
