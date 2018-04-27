@@ -20,12 +20,13 @@ module.exports = {
     ],
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/click-events-have-key-events": 0,
-    "no-hooks": 2,
-    "no-test-prefixes": 2,
-    "prefer-to-be-null": 2,
-    "prefer-to-be-undefined": 2,
-    "valid-expect": 2,
-    "valid-expect-in-promise": 2
+    "jsx-a11y/label-has-for": 0,
+    "jest/no-hooks": 2,
+    "jest/no-test-prefixes": 2,
+    "jest/prefer-to-be-null": 2,
+    "jest/prefer-to-be-undefined": 2,
+    "jest/valid-expect": 2,
+    "jest/valid-expect-in-promise": 2
 
   }
 };
