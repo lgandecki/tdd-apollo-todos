@@ -27,7 +27,7 @@ test("Add list", async () => {
   await wait(() => getByText("Such a beautiful list"), { timeout: 500 });
 });
 
-test.only("Remove list", async () => {
+test("Remove list", async () => {
   const { queryByText, getByText } = await loadApp();
 
   await wait(() => getByText("second list"));

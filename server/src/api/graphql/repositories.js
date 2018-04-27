@@ -1,5 +1,3 @@
 import { listsRepository } from "./lists/ListsRepository";
 
-export const repositories = {
-  listsRepository
-};
+export const repositories = [listsRepository];

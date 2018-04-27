@@ -1,7 +1,7 @@
 module.exports = {
   parser: "babel-eslint",
-  extends: ["airbnb", "plugin:prettier/recommended"],
-  plugins: ["prettier", "cypress", "graphql-next"],
+  extends: ["airbnb", "plugin:prettier/recommended", "plugin:jest/recommended"],
+  plugins: ["prettier", "cypress", "graphql-next", "jest"],
   env: {
     browser: true
   },
@@ -19,6 +19,13 @@ module.exports = {
       }
     ],
     "jsx-a11y/no-static-element-interactions": 0,
-    "jsx-a11y/click-events-have-key-events": 0
+    "jsx-a11y/click-events-have-key-events": 0,
+    "no-hooks": 2,
+    "no-test-prefixes": 2,
+    "prefer-to-be-null": 2,
+    "prefer-to-be-undefined": 2,
+    "valid-expect": 2,
+    "valid-expect-in-promise": 2
+
   }
 };

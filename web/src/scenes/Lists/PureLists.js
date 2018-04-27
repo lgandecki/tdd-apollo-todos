@@ -18,8 +18,8 @@ class PureLists extends React.Component {
     }
     return (
       <div className="App">
-        <label htmlFor="newList">
-          New List <input name="newList" onChange={this.changeNewListName} />
+        <label>
+          New List<input onChange={this.changeNewListName} />
         </label>
         <button onClick={this.addList}>Add List</button>
         {Lists.map(list => (
