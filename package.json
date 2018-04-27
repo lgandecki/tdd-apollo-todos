@@ -10,7 +10,7 @@
     "install:all": "npm install && pushd shared && npm install && pushd ../web && npm install && pushd ../server && npm install",
     "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
     "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",
-    "precommit": "npm run generateSchema && git add ./schema.graphql && npm run eslint:all && lint-staged",
+    "precommit": "npm run generateSchema && git add ./schema.graphql && lint-staged",
     "generateSchema": "node testing/generateSchema.js > ./schema.graphql",
     "test:e2e:mobile": "pushd mobile && ../node_modules/.bin/detox test -l verbose -c ios.sim ../testing/mobile/e2e/another.test.js",
     "test:e2e:mobile:local": "npm run mobile:e2e -- --reuse",
