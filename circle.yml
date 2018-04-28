@@ -30,7 +30,7 @@ jobs:
 ### SHARED PACKAGE
       - restore_cache:
           keys:
-            - npm-server-deps-{{ checksum "./shared/package.json" }}
+            - npm-shared-deps-{{ checksum "shared/package.json" }}
 
       - run:
           name: Install shared related packages
@@ -38,14 +38,14 @@ jobs:
           command: npm install
 
       - save_cache:
-          key: npm-server-deps-{{ checksum "./shared/package.json" }}
+          key: npm-shared-deps-{{ checksum "shared/package.json" }}
           paths:
             - shared/node_modules
 
 ### SERVER PACKAGE
       - restore_cache:
           keys:
-            - npm-server-deps-{{ checksum "./server/package.json" }}
+            - npm-new-server-deps-{{ checksum "server/package.json" }}
 
       - run:
           name: Install server packages
@@ -53,7 +53,7 @@ jobs:
           command: npm install
 
       - save_cache:
-          key: npm-server-deps-{{ checksum "./server/package.json" }}
+          key: npm-new-server-deps-{{ checksum "server/package.json" }}
           paths:
             - server/node_modules
       - run:
@@ -68,7 +68,7 @@ jobs:
 ### WEB PACKAGE
       - restore_cache:
           keys:
-            - npm-web-deps-{{ checksum "./web/package.json" }}
+            - npm-web-deps-{{ checksum "web/package.json" }}
 
       - run:
           name: Install web packages
@@ -76,7 +76,7 @@ jobs:
           command: npm install
 
       - save_cache:
-          key: npm-web-deps-{{ checksum "./web/package.json" }}
+          key: npm-web-deps-{{ checksum "web/package.json" }}
           paths:
             - web/node_modules
 
@@ -93,7 +93,7 @@ jobs:
 ### MOBILE PACKAGE
       - restore_cache:
           keys:
-            - npm-mobile-deps-{{ checksum "./mobile/package.json" }}
+            - npm-mobile-deps-{{ checksum "mobile/package.json" }}
 
       - run:
           name: Install mobile packages
@@ -101,7 +101,7 @@ jobs:
           command: npm install
 
       - save_cache:
-          key: npm-mobile-deps-{{ checksum "./mobile/package.json" }}
+          key: npm-mobile-deps-{{ checksum "mobile/package.json" }}
           paths:
             - mobile/node_modules
 
