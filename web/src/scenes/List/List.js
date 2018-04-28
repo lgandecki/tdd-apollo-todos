@@ -18,10 +18,11 @@ export default props => (
     query={showTodoItemsForList}
     variables={{ ListId: props.match.params.listId }}
   >
-    {({ loading, data }) => {
+    {({ loading, data, error }) => {
       if (loading) {
         return <div data-cy="loading">Loading...</div>;
       }
+      console.log("Gandecki error", error);
       const { TodoItems } = data;
       return <PureList todoItems={TodoItems} />;
     }}
