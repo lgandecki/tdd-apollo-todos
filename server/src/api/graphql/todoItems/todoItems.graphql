@@ -1,0 +1,9 @@
+type TodoItem {
+    _id: ID
+    name: String
+    isCompleted: Boolean
+}
+
+type Query {
+    TodoItems(ListId: ID!): [TodoItem]!
+}

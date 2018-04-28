@@ -2,8 +2,8 @@
 import gql from "graphql-tag";
 import gqlClient from "todos-apollo-testing/testing/common/gqlClient";
 import getListsWithDefaults from "todos-apollo-testing/testing/common/getListsWithDefaults";
+import "todos-apollo-testing/testing/common/customJestMatcher";
 import listsResolvers from "./listsResolvers";
-import "./customJestMatcher";
 
 test("returns all lists", async () => {
   const listsRepository = await getListsWithDefaults();

@@ -1,5 +1,6 @@
 type Query {
   Lists: [List]
+  TodoItems(ListId: ID!): [TodoItem]!
 }
 
 type Mutation {
@@ -11,5 +12,11 @@ type List {
   _id: ID
   name: String
   incompleteCount: Int
+}
+
+type TodoItem {
+  _id: ID
+  name: String
+  isCompleted: Boolean
 }
 
