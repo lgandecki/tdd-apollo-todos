@@ -1,33 +1,8 @@
 /* eslint-env jest */
-import React from "react";
 import { wait, Simulate } from "react-testing-library";
 import "dom-testing-library/extend-expect";
+import "./common/linkMock";
 import { loadApp } from "./common/loadApp";
-
-jest.mock("react-router-dom", () => ({
-  Link: props => {
-    // eslint-disable-next-line global-require
-    const { withRouter } = require("react-router");
-    const RealLink = internalProps => {
-      const changePath = () => {
-        internalProps.history.push(internalProps.to);
-      };
-      const newProps = { ...internalProps };
-
-      delete newProps.to;
-      delete newProps.location;
-      delete newProps.match;
-      delete newProps.history;
-      return (
-        <a href={internalProps.to} {...newProps} onClick={changePath}>
-          {internalProps.children}
-        </a>
-      );
-    };
-    const Wrapped = withRouter(RealLink);
-    return <Wrapped {...props} />;
-  }
-}));
 
 test("Rendering component connected to the server", async () => {
   const { getByText } = await loadApp();

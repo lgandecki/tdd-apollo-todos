@@ -2,6 +2,7 @@
 import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import PureList from "./PureList";
 
 const showTodoItemsForList = gql`
   query TodoItems($ListId: ID!) {
@@ -18,20 +19,12 @@ export default props => (
     query={showTodoItemsForList}
     variables={{ ListId: props.match.params.listId }}
   >
-    {({ loading, data, error }) => {
+    {({ loading, data }) => {
       if (loading) {
         return <div data-cy="loading">Loading...</div>;
       }
-      console.log("Gandecki error", error);
       const { TodoItems } = data;
       return <PureList todoItems={TodoItems} />;
     }}
   </Query>
 );
-
-const PureList = props => {
-  console.log("Gandecki props", props.todoItems);
-  return (
-    <div>{props.todoItems.map(todoItem => <div>{todoItem.name}</div>)}</div>
-  );
-};
