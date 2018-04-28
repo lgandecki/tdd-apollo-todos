@@ -1,5 +1,5 @@
 type List {
-  _id: String
+  _id: ID
   name: String
   incompleteCount: Int
 }
