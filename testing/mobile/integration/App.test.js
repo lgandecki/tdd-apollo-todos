@@ -8,7 +8,7 @@ import AppWithApollo from "../../../mobile/AppWithApollo";
 import getListsWithDefaults from "../../common/getListsWithDefaults";
 import gqlClient from "../../common/gqlClient";
 
-test("Rendering component connected to the server", async () => {
+test.skip("Rendering component connected to the server", async () => {
   const listsRepository = await getListsWithDefaults();
   const { getByText } = render(
     <ApolloProvider
