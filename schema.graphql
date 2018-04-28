@@ -2,6 +2,11 @@ type Query {
   Lists: [List]
 }
 
+type Mutation {
+  AddList(ListName: String!): List
+  RemoveList(ListName: String!): String
+}
+
 type List {
   _id: String
   name: String

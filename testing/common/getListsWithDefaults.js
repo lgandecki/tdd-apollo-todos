@@ -14,4 +14,3 @@ export default async function getListsWithDefaults() {
   });
   return listsRepository;
 }
-

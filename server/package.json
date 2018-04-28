@@ -1,5 +1,5 @@
 {
-  "name": "todos-apollo-server",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -30,6 +30,7 @@
     "apollo-link-schema": "^1.0.6",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "jest": "^22.4.2",
     "tingodb-promise": "0.0.2"
   }

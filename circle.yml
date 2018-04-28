@@ -57,9 +57,6 @@ jobs:
           paths:
             - server/node_modules
       - run:
-          working_directory: server/
-          command: npm test -- --forceExit
-      - run:
           name: Setup the database data
           command: npm run createDefaultDB
       - run:
@@ -84,10 +81,6 @@ jobs:
             - web/node_modules
 
       - run:
-          working_directory: web/
-          command: npm test
-
-      - run:
           name: Wait for the Server to start up
           command: npx wait-on "http://localhost:8080/graphiql" -t 30000
 
@@ -97,10 +90,29 @@ jobs:
           command: npm start
           background: true
 
+### MOBILE PACKAGE
+      - restore_cache:
+          keys:
+            - npm-mobile-deps-{{ checksum "./mobile/package.json" }}
+
+      - run:
+          name: Install mobile packages
+          working_directory: mobile/
+          command: npm install
+
+      - save_cache:
+          key: npm-mobile-deps-{{ checksum "./mobile/package.json" }}
+          paths:
+            - mobile/node_modules
+
 ### ALL TOGETHER
-      - run: npm run eslintAll
+      - run: npm run eslint:all
+
+      - run:
+          name: Integration test for web/mobile/server
+          command: npm run test:integration:all
 
       - run:
           name: End to end test
-          command: npm test
+          command: npm run test:e2e:web
 

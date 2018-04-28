@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const allListsQuery = gql`
-  query TodoAppQuery {
+  query AllLists {
     Lists {
       name
       incompleteCount

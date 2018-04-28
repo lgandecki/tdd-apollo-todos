@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import getListsWithDefaults from "./getListsWithDefaults";
 import { dbConnector } from "../../server/src/api/common/MongoRepository";
 

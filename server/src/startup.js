@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import { createApp } from "./app";
 
-const serverListen = async function() {
+const serverListen = async function serverListen() {
   const { app } = await createApp();
   const server = createServer(app);
   const port = process.env.PORT || 8080;
