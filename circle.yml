@@ -27,6 +27,8 @@ jobs:
             - node_modules
           key: v1-test-dependencies-{{ checksum "package.json" }}
 
+      - run: npm run eslint
+
 ### SHARED PACKAGE
       - restore_cache:
           keys:
