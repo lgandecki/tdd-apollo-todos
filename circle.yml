@@ -43,19 +43,19 @@ jobs:
             - shared/node_modules
 
 ### SERVER PACKAGE
-      - restore_cache:
-          keys:
-            - npm-new-server-deps-{{ checksum "server/package.json" }}
+#      - restore_cache:
+#          keys:
+#            - npm-new-server-deps-{{ checksum "server/package.json" }}
 
       - run:
           name: Install server packages
           working_directory: server/
           command: npm install
 
-      - save_cache:
-          key: npm-new-server-deps-{{ checksum "server/package.json" }}
-          paths:
-            - server/node_modules
+#      - save_cache:
+#          key: npm-new-server-deps-{{ checksum "server/package.json" }}
+#          paths:
+#            - server/node_modules
       - run:
           name: Setup the database data
           command: npm run createDefaultDB
