@@ -7,7 +7,7 @@ import gqlClient from "../../../testing/common/gqlClient";
 import getListsWithDefaults from "../../../testing/common/getListsWithDefaults";
 import Routes from "../../../web/src/Routes";
 
-test("Rendering component connected to the server", async () => {
+test.skip("Rendering component connected to the server", async () => {
   const listsRepository = await getListsWithDefaults();
   const { getByText } = render(
     <ApolloProvider

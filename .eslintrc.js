@@ -26,6 +26,7 @@ module.exports = {
     "jest/prefer-to-be-null": 2,
     "jest/prefer-to-be-undefined": 2,
     "jest/valid-expect": 2,
-    "jest/valid-expect-in-promise": 2
+    "jest/valid-expect-in-promise": 2,
+    "no-underscore-dangle": 0
   }
 };

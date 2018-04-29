@@ -6,6 +6,7 @@ type Query {
 type Mutation {
   AddList(ListName: String!): List
   RemoveList(ListName: String!): String
+  RemoveItem(ItemId: ID!): String
 }
 
 type List {
@@ -16,7 +17,7 @@ type List {
 
 type TodoItem {
   _id: ID
-  name: String
-  isCompleted: Boolean
+  text: String
+  checked: Boolean
 }
 

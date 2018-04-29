@@ -4,13 +4,35 @@ import "dom-testing-library/extend-expect";
 import "./common/linkMock";
 import { loadApp } from "./common/loadApp";
 
+const findTodo = (todoText, container) =>
+  Array.from(container.querySelectorAll("input")).filter(
+    el => el.getAttribute("value") === todoText
+  );
+
+const isTodoShown = (todoText, container) =>
+  findTodo(todoText, container).length > 0;
+
 test("Rendering component connected to the server", async () => {
-  const { getByText } = await loadApp();
-  expect(getByText("loading")).toBeDefined();
+  const { getByText, getByAltText } = await loadApp();
+  expect(getByAltText("Loading...")).toBeDefined();
   await wait(() => getByText("second list"), { timeout: 500 });
 });
 
-test("Add list", async () => {
+test("Show todos for a selected list", async () => {
+  const { getByText, container } = await loadApp();
+
+  await wait(() => getByText("second list"), { timeout: 500 });
+
+  Simulate.click(getByText("second list"));
+
+  await wait(
+    () =>
+      expect(isTodoShown("todo in the second list", container)).toBeTruthy(),
+    { timeout: 500 }
+  );
+});
+
+test.skip("Add list", async () => {
   const { getByLabelText, getByText, queryByText } = await loadApp();
   await wait(() => expect(queryByText("loading")).not.toBeInTheDOM(), {
     timeout: 500
@@ -23,23 +45,28 @@ test("Add list", async () => {
   await wait(() => getByText("Such a beautiful list"), { timeout: 500 });
 });
 
-test("Remove list", async () => {
-  const { queryByText, getByText } = await loadApp();
+const deleteTodo = (name, container) => {
+  const found = Array.from(
+    findTodo(name, container)[0].parentNode.querySelectorAll("*")
+  ).filter(el => el.dataset.testid === "deleteItem");
+  Simulate.click(found);
+};
 
-  await wait(() => getByText("second list"), { timeout: 500 });
-  Simulate.click(getByText("remove second list"));
+test("Remove todo", async () => {
+  const { getByTestId, container } = await loadApp();
 
-  await wait(() => expect(queryByText("second list")).not.toBeInTheDOM(), {
-    timeout: 500
-  });
-});
+  await wait(
+    () => expect(isTodoShown("todo in the first list", container)).toBeTruthy(),
+    { timeout: 500 }
+  );
 
-test("Show todos for a selected list", async () => {
-  const { getByText } = await loadApp();
+  Simulate.click(getByTestId("deleteItem"));
+  deleteTodo("todo in the first list", container);
 
-  await wait(() => getByText("second list"), { timeout: 500 });
-
-  Simulate.click(getByText("second list"));
-
-  await wait(() => getByText("todo in the second list"), { timeout: 500 });
+  await wait(
+    () => expect(isTodoShown("todo in the first list", container)).toBeFalsy(),
+    {
+      timeout: 500
+    }
+  );
 });

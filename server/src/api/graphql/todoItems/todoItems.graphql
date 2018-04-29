@@ -1,9 +1,13 @@
 type TodoItem {
     _id: ID
-    name: String
-    isCompleted: Boolean
+    text: String
+    checked: Boolean
 }
 
 type Query {
     TodoItems(ListId: ID!): [TodoItem]!
+}
+
+type Mutation {
+    RemoveItem(ItemId: ID!): String
 }

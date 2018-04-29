@@ -2,7 +2,8 @@ import React from "react";
 import createHistory from "history/createBrowserHistory";
 import { ApolloProvider } from "react-apollo";
 import { render } from "react-testing-library";
-import Routes from "../../../../web/src/Routes";
+// import Routes from "../../../../web/src/Routes";
+import App from "../../../../web/src/layouts/App";
 import { resolvers } from "../../../../server/src/api/graphql/resolvers";
 import gqlClient from "../../../common/gqlClient";
 import getListsWithDefaults from "../../../common/getListsWithDefaults";
@@ -26,7 +27,7 @@ export const loadApp = async (context = {}, initialPath = "/") => {
         resolvers: [resolvers]
       })}
     >
-      <Routes history={history} />
+      <App history={history} />
     </ApolloProvider>
   );
 };

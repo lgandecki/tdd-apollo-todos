@@ -12,8 +12,8 @@ test("returns todo items for a given list", async () => {
     query TodoItems($ListId: ID!) {
       TodoItems(ListId: $ListId) {
         _id
-        name
-        isCompleted
+        text
+        checked
       }
     }
   `;
@@ -29,7 +29,7 @@ test("returns todo items for a given list", async () => {
 
   expect(TodoItems).toContainObject({
     _id: "firstTodoId",
-    name: "todo in the first list",
-    isCompleted: true
+    text: "first todo in the first list",
+    checked: true
   });
 });
