@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { Query, Mutation } from "react-apollo";
+import { Query } from "react-apollo";
 import { Switch, Redirect } from "react-router-dom";
 import { Router, Route } from "react-router";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import _ from "lodash";
+import PropTypes from "prop-types";
+import createHistory from "history/createBrowserHistory";
+import { allListsQuery } from "shared/graphql/lists/allListsQuery";
 // import { Lists } from "../../api/lists/lists.js";
 // import UserMenu from "../components/UserMenu.jsx";
 import ListList from "../components/ListList";
@@ -11,9 +14,6 @@ import ListList from "../components/ListList";
 // import ConnectionNotification from "../components/ConnectionNotification.jsx";
 import Loading from "../components/Loading";
 import ListPageContainer from "../containers/ListPageContainer";
-import PropTypes from "prop-types";
-import createHistory from "history/createBrowserHistory";
-import { allListsQuery } from "shared/graphql/lists/allListsQuery";
 // import AuthPageSignIn from "../pages/AuthPageSignIn.jsx";
 // import AuthPageJoin from "../pages/AuthPageJoin.jsx";
 // import NotFoundPage from "../pages/NotFoundPage.jsx";
@@ -23,10 +23,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       // showConnectionIssue: false,
-      defaultList: null,
-      redirectTo: null,
-      menuOpen: false,
-      loading: true
+      // defaultList: null,
+      menuOpen: false
     };
     this.closeMenu = this.toggleMenu.bind(this);
     this.logout = this.logout.bind(this);
@@ -45,24 +43,28 @@ export default class App extends Component {
 
   logout() {
     // Meteor.logout();
-    this.setState({
-      redirectTo: this.state.defaultList
-    });
+    // this.setState({
+    //   redirectTo: this.state.defaultList
+    // });
   }
 
   renderRedirect(location, lists) {
-    const { redirectTo } = this.state;
     const { pathname } = location;
     let redirect = null;
+    if (pathname.includes("/lists/")) {
+      const listId = pathname.split("/")[2];
+      const list = _.find(lists, l => l._id === listId);
+      if (!list) {
+        redirect = <Redirect to={`/lists/${lists[0]._id}`} />;
+      }
+    }
     if (pathname === "/" && lists[0]._id) {
-      redirect = <Redirect to={`lists/${lists[0]._id}`} />;
+      redirect = <Redirect to={`/lists/${lists[0]._id}`} />;
     }
     return redirect;
   }
 
   renderContent(location, lists) {
-    const { loading } = this.props;
-
     const commonChildProps = {
       menuOpen: this.state.menuOpen
     };
@@ -74,34 +76,35 @@ export default class App extends Component {
         </section>
         <div className="content-overlay" onClick={this.closeMenu} />
         <div id="content-container">
-          {loading ? (
-            <Loading key="loading" />
-          ) : (
-            <TransitionGroup>
-              <CSSTransition key={location.key} classNames="fade" timeout={200}>
-                <Switch location={location}>
-                  <Route
-                    path="/lists/:listId"
-                    render={({ match: { params: { listId } } }) => {
-                      const list = _.find(lists, l => l._id === listId);
+          <TransitionGroup>
+            <CSSTransition key={location.key} classNames="fade" timeout={200}>
+              <Switch location={location}>
+                <Route
+                  path="/lists/:listId"
+                  render={({ match: { params: { listId } } }) => {
+                    const list = _.find(lists, l => l._id === listId);
+                    if (list) {
                       return (
                         <ListPageContainer list={list} {...commonChildProps} />
                       );
-                    }}
-                  />
-                  <Route
-                    path="/signin"
-                    render={() => <ListPageContainer {...commonChildProps} />}
-                  />
-                  <Route
-                    path="/join"
-                    render={() => <ListPageContainer {...commonChildProps} />}
-                  />
-                  <Route path="/*" render={() => <Loading key="loading" />} />
-                </Switch>
-              </CSSTransition>
-            </TransitionGroup>
-          )}
+                    }
+                    // return <Redirect to={`/lists/${lists[0]._id}`} />;
+
+                    return <Loading key="loading" />;
+                  }}
+                />
+                <Route
+                  path="/signin"
+                  render={() => <ListPageContainer {...commonChildProps} />}
+                />
+                <Route
+                  path="/join"
+                  render={() => <ListPageContainer {...commonChildProps} />}
+                />
+                <Route path="/*" render={() => <Loading key="loading" />} />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     );

@@ -5,9 +5,11 @@ type TodoItem {
 }
 
 type Query {
-    TodoItems(ListId: ID!): [TodoItem]!
+    TodoItems(listId: ID!): [TodoItem]!
 }
 
 type Mutation {
-    RemoveItem(ItemId: ID!): String
+    RemoveItem(itemId: ID!): String
+    AddTodo(listId: ID!, text: String!): TodoItem
+    ToggleTodoCheck(itemId: ID!, checked: Boolean!): TodoItem
 }

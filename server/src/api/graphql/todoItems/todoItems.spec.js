@@ -9,8 +9,8 @@ test("returns todo items for a given list", async () => {
   const todoItemsRepository = await getTodoItemsWithDefaults();
 
   const query = gql`
-    query TodoItems($ListId: ID!) {
-      TodoItems(ListId: $ListId) {
+    query TodoItems($listId: ID!) {
+      TodoItems(listId: $listId) {
         _id
         text
         checked
@@ -22,14 +22,14 @@ test("returns todo items for a given list", async () => {
     resolvers: [todoItemsResolvers]
   }).query({
     query,
-    variables: { ListId: "secondId" }
+    variables: { listId: "secondId" }
   });
 
   const { TodoItems } = result.data;
 
   expect(TodoItems).toContainObject({
     _id: "firstTodoId",
-    text: "first todo in the first list",
+    text: "first todo in the second list",
     checked: true
   });
 });

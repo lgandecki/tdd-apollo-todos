@@ -5,19 +5,19 @@ export default async function getTodoItemsWithDefaults() {
   await todoItemsRepository.todoItemsCollection.insert({
     _id: "todoInFirstId",
     listId: "firstId",
-    text: "todo in the first list",
+    text: "first todo in the first list",
     checked: false
   });
   await todoItemsRepository.todoItemsCollection.insert({
     _id: "firstTodoId",
     listId: "secondId",
-    text: "first todo in the first list",
+    text: "first todo in the second list",
     checked: true
   });
   await todoItemsRepository.todoItemsCollection.insert({
     _id: "secondTodoId",
     listId: "secondId",
-    text: "todo in the second list",
+    text: "second todo in the second list",
     checked: false
   });
   return todoItemsRepository;

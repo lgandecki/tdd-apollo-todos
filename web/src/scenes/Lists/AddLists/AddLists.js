@@ -5,8 +5,8 @@ import { allListsQuery } from "shared/graphql/lists/allListsQuery";
 import PureAddLists from "./PureAddLists";
 
 const addListMutation = gql`
-  mutation AddList($ListName: String!) {
-    AddList(ListName: $ListName) {
+  mutation AddList($listName: String!) {
+    AddList(listName: $listName) {
       name
     }
   }
@@ -19,7 +19,7 @@ export default () => (
   >
     {addList => (
       <PureAddLists
-        addList={ListName => addList({ variables: { ListName } })}
+        addList={listName => addList({ variables: { listName } })}
       />
     )}
   </Mutation>

@@ -20,7 +20,8 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "react-transition-group": "^2.3.1",
-    "shared": "../shared"
+    "shared": "../shared",
+    "sweetalert2-react": "^0.7.2"
   },
   "scripts": {
     "preinstall": "npm link ../shared",

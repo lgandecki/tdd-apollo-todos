@@ -6,8 +6,8 @@ import ListPage from "../pages/ListPage";
 import Loading from "../components/Loading";
 
 export const showTodoItemsForList = gql`
-  query TodoItems($ListId: ID!) {
-    TodoItems(ListId: $ListId) {
+  query TodoItems($listId: ID!) {
+    TodoItems(listId: $listId) {
       _id
       checked
       text
@@ -16,7 +16,7 @@ export const showTodoItemsForList = gql`
 `;
 
 export default ({ list }) => (
-  <Query query={showTodoItemsForList} variables={{ ListId: list._id }}>
+  <Query query={showTodoItemsForList} variables={{ listId: list._id }}>
     {({ loading, data: { TodoItems } }) => {
       if (loading) {
         return <Loading key="loading" />;

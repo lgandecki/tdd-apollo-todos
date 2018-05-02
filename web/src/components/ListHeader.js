@@ -3,22 +3,51 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import SweetAlert from "sweetalert2-react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 import BaseComponent from "./BaseComponent";
 import MobileMenu from "./MobileMenu";
-import { displayError } from "../helpers/errors";
+import { showTodoItemsForList } from "../containers/ListPageContainer";
+
+const removeListMutation = gql`
+  mutation RemoveList($listId: ID!) {
+    RemoveList(listId: $listId)
+  }
+`;
+
+const changeListNameMutation = gql`
+  mutation($listId: ID!, $newName: String!) {
+    ChangeListName(listId: $listId, newName: $newName) {
+      _id
+      name
+    }
+  }
+`;
+
+const addNewTodoMutation = gql`
+  mutation($listId: ID!, $text: String!) {
+    AddTodo(listId: $listId, text: $text) {
+      _id
+      text
+    }
+  }
+`;
 
 // import {
 //   updateName,
 //   makePublic,
 //   makePrivate,
-//   remove
 // } from "../../api/lists/methods.js";
 // import { insert } from "../../api/todos/methods.js";
 
 export default class ListHeader extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = Object.assign(this.state, { editing: false });
+    this.state = {
+      editing: false,
+      showDeleteListConfirmation: false
+    };
     this.onListFormSubmit = this.onListFormSubmit.bind(this);
     this.onListInputKeyUp = this.onListInputKeyUp.bind(this);
     this.onListInputBlur = this.onListInputBlur.bind(this);
@@ -30,6 +59,7 @@ export default class ListHeader extends BaseComponent {
     this.toggleListPrivacy = this.toggleListPrivacy.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.focusTodoInput = this.focusTodoInput.bind(this);
+    this.deleteConfirmation = this.deleteConfirmation.bind(this);
   }
 
   onListFormSubmit(event) {
@@ -43,9 +73,9 @@ export default class ListHeader extends BaseComponent {
     }
   }
 
-  onListInputBlur() {
+  onListInputBlur(saveListMutation) {
     if (this.state.editing) {
-      this.saveList();
+      this.saveList(saveListMutation);
     }
   }
 
@@ -67,27 +97,23 @@ export default class ListHeader extends BaseComponent {
     this.setState({ editing: false });
   }
 
-  saveList() {
-    // this.setState({ editing: false });
-    // updateName.call(
-    //   {
-    //     listId: this.props.list._id,
-    //     newName: this.listNameInput.value
-    //   },
-    //   displayError
-    // );
+  saveList(saveListMutation) {
+    this.setState({ editing: false });
+    saveListMutation({
+      variables: {
+        listId: this.props.list._id,
+        newName: this.listNameInput.value
+      }
+    });
   }
 
-  deleteList() {
-    // const { list } = this.props;
-    // const message = `${i18n.__("components.listHeader.deleteConfirm")} ${
-    //   list.name
-    // }?`;
-    //
-    // if (confirm(message)) {
-    //   remove.call({ listId: list._id }, displayError);
-    //   this.redirectTo("/");
-    // }
+  deleteConfirmation() {
+    this.setState({ showDeleteListConfirmation: true });
+  }
+
+  deleteList(removeList) {
+    this.setState({ showDeleteListConfirmation: false });
+    removeList();
   }
 
   toggleListPrivacy() {
@@ -99,19 +125,13 @@ export default class ListHeader extends BaseComponent {
     // }
   }
 
-  createTodo(event) {
-    // event.preventDefault();
-    // const input = this.newTodoInput;
-    // if (input.value.trim()) {
-    //   insert.call(
-    //     {
-    //       listId: this.props.list._id,
-    //       text: input.value
-    //     },
-    //     displayError
-    //   );
-    //   input.value = "";
-    // }
+  createTodo(event, addTodo) {
+    event.preventDefault();
+    const { newTodoInput } = this;
+    const newTodoText = newTodoInput.value;
+    const listId = this.props.list._id;
+    newTodoInput.value = "";
+    addTodo({ variables: { listId, text: newTodoText } });
   }
 
   focusTodoInput() {
@@ -124,7 +144,9 @@ export default class ListHeader extends BaseComponent {
       <div>
         <MobileMenu menuOpen={this.props.menuOpen} />
         <h1 className="title-page" onClick={this.editList}>
-          <span className="title-wrapper">{list.name}</span>
+          <span className="title-wrapper" data-testid="editListName">
+            {list.name}
+          </span>
           <span className="count-list">{list.incompleteCount}</span>
         </h1>
         <div className="nav-group right">
@@ -154,9 +176,36 @@ export default class ListHeader extends BaseComponent {
                 <span className="icon-unlock" title="Make list private" />
               )}
             </a>
-            <a className="nav-item trash" onClick={this.deleteList}>
-              <span className="icon-trash" title="Delete list" />
+            <a className="nav-item trash" onClick={this.deleteConfirmation}>
+              <span
+                className="icon-trash"
+                title="Delete list"
+                data-testid="deleteList"
+              />
             </a>
+            <Mutation
+              mutation={removeListMutation}
+              variables={{ listId: list._id }}
+              refetchQueries={["AllLists"]}
+            >
+              {removeList => (
+                <SweetAlert
+                  show={this.state.showDeleteListConfirmation}
+                  title="Delete list"
+                  text={`Are you sure you want to delete the ${list.name} list`}
+                  type="warning"
+                  showCancelButton
+                  confirmButtonText="Delete it!"
+                  cancelButtonText="Nope"
+                  onConfirm={() => {
+                    this.deleteList(removeList);
+                  }}
+                  onCancel={() => {
+                    this.setState({ showDeleteListConfirmation: false });
+                  }}
+                />
+              )}
+            </Mutation>
           </div>
         </div>
       </div>
@@ -167,17 +216,23 @@ export default class ListHeader extends BaseComponent {
     const { list } = this.props;
     return (
       <form className="list-edit-form" onSubmit={this.onListFormSubmit}>
-        <input
-          type="text"
-          name="name"
-          autoComplete="off"
-          ref={c => {
-            this.listNameInput = c;
-          }}
-          defaultValue={list.name}
-          onKeyUp={this.onListInputKeyUp}
-          onBlur={this.onListInputBlur}
-        />
+        <Mutation mutation={changeListNameMutation}>
+          {changeListName => (
+            <input
+              type="text"
+              name="name"
+              autoComplete="off"
+              ref={c => {
+                this.listNameInput = c;
+              }}
+              defaultValue={list.name}
+              onKeyUp={this.onListInputKeyUp}
+              onBlur={() => {
+                this.onListInputBlur(changeListName);
+              }}
+            />
+          )}
+        </Mutation>
         <div className="nav-group right">
           <a
             className="nav-item"
@@ -197,16 +252,36 @@ export default class ListHeader extends BaseComponent {
       this.renderRedirect() || (
         <nav className="list-header">
           {editing ? this.renderEditingHeader() : this.renderDefaultHeader()}
-          <form className="todo-new input-symbol" onSubmit={this.createTodo}>
-            <input
-              type="text"
-              ref={c => {
-                this.newTodoInput = c;
-              }}
-              placeholder="Type to add new tasks"
-            />
-            <span className="icon-add" onClick={this.focusTodoInput} />
-          </form>
+          <Mutation
+            mutation={addNewTodoMutation}
+            refetchQueries={[
+              {
+                query: showTodoItemsForList,
+                variables: { listId: this.props.list._id }
+              }
+            ]}
+          >
+            {addTodo => (
+              <form
+                className="todo-new input-symbol"
+                data-testid="newTodoForm"
+                onSubmit={event => this.createTodo(event, addTodo)}
+              >
+                <input
+                  type="text"
+                  ref={c => {
+                    this.newTodoInput = c;
+                  }}
+                  placeholder="Type to add new tasks"
+                />
+                <span
+                  className="icon-add"
+                  data-testid="focusTodoInput"
+                  onClick={this.focusTodoInput}
+                />
+              </form>
+            )}
+          </Mutation>
         </nav>
       )
     );

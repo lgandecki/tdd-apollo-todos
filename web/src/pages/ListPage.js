@@ -1,10 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import BaseComponent from "../components/BaseComponent";
 import ListHeader from "../components/ListHeader";
 import TodoItem from "../components/TodoItem";
-import NotFoundPage from "../pages/NotFoundPage";
+// import NotFoundPage from "../pages/NotFoundPage";
 import Message from "../components/Message";
 
 export default class ListPage extends BaseComponent {
@@ -52,18 +52,8 @@ export default class ListPage extends BaseComponent {
     return (
       <div className="page lists-show">
         <ListHeader list={list} menuOpen={this.props.menuOpen} />
-        <div className="content-scrollable list-items">
-          {Todos}
-        </div>
+        <div className="content-scrollable list-items">{Todos}</div>
       </div>
     );
   }
 }
-
-ListPage.propTypes = {
-  list: PropTypes.object,
-  todos: PropTypes.array,
-  loading: PropTypes.bool,
-  listExists: PropTypes.bool,
-  menuOpen: PropTypes.object.isRequired
-};

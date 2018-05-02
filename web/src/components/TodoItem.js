@@ -15,8 +15,17 @@ import { showTodoItemsForList } from "../containers/ListPageContainer";
 // } from "../../api/todos/methods.js";
 
 const removeItemMutation = gql`
-  mutation RemoveItem($ItemId: ID!) {
-    RemoveItem(ItemId: $ItemId)
+  mutation RemoveItem($itemId: ID!) {
+    RemoveItem(itemId: $itemId)
+  }
+`;
+
+const toggleTodoCheckMutation = gql`
+  mutation($itemId: ID!, $checked: Boolean!) {
+    ToggleTodoCheck(itemId: $itemId, checked: $checked) {
+      _id
+      checked
+    }
   }
 `;
 export default class TodoItem extends BaseComponent {
@@ -49,14 +58,13 @@ export default class TodoItem extends BaseComponent {
     this.props.onEditingChange(this.props.todo._id, false);
   }
 
-  setTodoCheckStatus(event) {
-    // setCheckedStatus.call({
-    //   todoId: this.props.todo._id,
-    //   newCheckedStatus: event.target.checked
-    // });
+  setTodoCheckStatus(event, toggleTodo) {
+    toggleTodo({
+      variables: { itemId: this.props.todo._id, checked: !event.target.checked }
+    });
   }
 
-  updateTodo(event) {
+  updateTodo() {
     // this.throttledUpdate(event.target.value);
   }
 
@@ -74,16 +82,21 @@ export default class TodoItem extends BaseComponent {
     });
     return (
       <div className={todoClass} data-testid={todo.text}>
-        <label className="checkbox" htmlFor={todo._id}>
-          <input
-            id={todo._id}
-            type="checkbox"
-            checked={todo.checked}
-            name="checked"
-            onChange={this.setTodoCheckStatus}
-          />
-          <span className="checkbox-custom" />
-        </label>
+        <Mutation mutation={toggleTodoCheckMutation}>
+          {toggleTodo => (
+            <label className="checkbox" htmlFor={todo._id}>
+              <input
+                id={todo._id}
+                title={`check-${todo.text}`}
+                type="checkbox"
+                checked={todo.checked}
+                name="checked"
+                onChange={event => this.setTodoCheckStatus(event, toggleTodo)}
+              />
+              <span className="checkbox-custom" />
+            </label>
+          )}
+        </Mutation>
         <input
           type="text"
           defaultValue={todo.text}
@@ -92,30 +105,26 @@ export default class TodoItem extends BaseComponent {
           onBlur={this.onBlur}
           onChange={this.updateTodo}
         />
-        <Mutation mutation={removeItemMutation}>
-          {removeItem => {
-            const removeItemNew = () => {
-              removeItem({
-                variables: { ItemId: todo._id },
-                refetchQueries: [
-                  {
-                    query: showTodoItemsForList,
-                    variables: { ListId: this.props.listId }
-                  }
-                ]
-              });
-            };
-            return (
-              <a
-                className="delete-item"
-                href="#delete"
-                onClick={removeItemNew}
-                onMouseDown={removeItemNew}
-              >
-                <span className="icon-trash" data-testid="deleteItem" />
-              </a>
-            );
-          }}
+        <Mutation
+          mutation={removeItemMutation}
+          variables={{ itemId: todo._id }}
+          refetchQueries={[
+            {
+              query: showTodoItemsForList,
+              variables: { listId: this.props.listId }
+            }
+          ]}
+        >
+          {removeItem => (
+            <a
+              className="delete-item"
+              href="#delete"
+              onClick={removeItem}
+              onMouseDown={removeItem}
+            >
+              <span className="icon-trash" data-testid="deleteItem" />
+            </a>
+          )}
         </Mutation>
       </div>
     );

@@ -1,3 +1,4 @@
+import MongoClient from "mongodb";
 import { MongoRepository } from "../../common/MongoRepository";
 
 export class ListsRepository extends MongoRepository {
@@ -9,15 +10,25 @@ export class ListsRepository extends MongoRepository {
     return this.listsCollection.find().toArray();
   }
 
-  async addList({ ListName: name }) {
-    const newList = { name, incompleteCount: 0 };
+  async addList({ listName: name }) {
+    console.log("Gandecki name", name);
+    const newList = {
+      _id: new MongoClient.ObjectId().toString(),
+      name,
+      incompleteCount: 0
+    };
     await this.listsCollection.insert(newList);
     return newList;
   }
 
-  async removeList({ ListName: name }) {
-    await this.listsCollection.remove({ name });
-    return name;
+  async removeList({ listId: _id }) {
+    await this.listsCollection.remove({ _id });
+    return _id;
+  }
+
+  async changeListName({ listId: _id, newName: name }) {
+    await this.listsCollection.update({ _id }, { $set: { name } });
+    return this.listsCollection.findOne({ _id });
   }
 }
 

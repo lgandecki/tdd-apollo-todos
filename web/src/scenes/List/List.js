@@ -5,11 +5,11 @@ import gql from "graphql-tag";
 import PureList from "./PureList";
 
 const showTodoItemsForList = gql`
-  query TodoItems($ListId: ID!) {
-    TodoItems(ListId: $ListId) {
+  query TodoItems($listId: ID!) {
+    TodoItems(listId: $listId) {
       _id
-      isCompleted
-      name
+      checked
+      text
     }
   }
 `;
@@ -17,7 +17,7 @@ const showTodoItemsForList = gql`
 export default props => (
   <Query
     query={showTodoItemsForList}
-    variables={{ ListId: props.match.params.listId }}
+    variables={{ listId: props.match.params.listId }}
   >
     {({ loading, data }) => {
       if (loading) {

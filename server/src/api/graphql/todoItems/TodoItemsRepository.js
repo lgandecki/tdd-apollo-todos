@@ -5,12 +5,31 @@ export class TodoItemsRepository extends MongoRepository {
     this.todoItemsCollection = this.db.collection("todoItems");
   }
 
-  getItemsFor({ ListId }) {
-    return this.todoItemsCollection.find({ listId: ListId }).toArray();
+  getItemsFor({ listId }) {
+    return this.todoItemsCollection.find({ listId }).toArray();
   }
 
-  removeItem({ ItemId }) {
-    return this.todoItemsCollection.remove({ _id: ItemId });
+  removeItem({ itemId }) {
+    return this.todoItemsCollection.remove({ _id: itemId });
+  }
+
+  async addTodo({ text, listId }) {
+    const returned = await this.todoItemsCollection.insert({
+      text,
+      listId,
+      checked: false
+    });
+    return returned.ops[0];
+  }
+
+  async toggleTodoCheck({ itemId, checked }) {
+    await this.todoItemsCollection.update(
+      {
+        _id: itemId
+      },
+      { $set: { checked } }
+    );
+    return { _id: itemId, checked };
   }
 }
 

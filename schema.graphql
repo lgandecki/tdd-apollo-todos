@@ -1,12 +1,15 @@
 type Query {
   Lists: [List]
-  TodoItems(ListId: ID!): [TodoItem]!
+  TodoItems(listId: ID!): [TodoItem]!
 }
 
 type Mutation {
-  AddList(ListName: String!): List
-  RemoveList(ListName: String!): String
-  RemoveItem(ItemId: ID!): String
+  AddList(listName: String!): List
+  RemoveList(listId: ID!): String
+  ChangeListName(listId: ID!, newName: String!): List
+  RemoveItem(itemId: ID!): String
+  AddTodo(listId: ID!, text: String!): TodoItem
+  ToggleTodoCheck(itemId: ID!, checked: Boolean!): TodoItem
 }
 
 type List {

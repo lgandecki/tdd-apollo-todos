@@ -4,7 +4,11 @@ export default {
       context.todoItemsRepository.getItemsFor(input)
   },
   Mutation: {
-    RemoveItem: (_, input, context) =>
-      context.todoItemsRepository.removeItem(input)
+    RemoveItem: (_, input, { todoItemsRepository }) =>
+      todoItemsRepository.removeItem(input),
+    AddTodo: (_, { text, listId }, { todoItemsRepository }) =>
+      todoItemsRepository.addTodo({ text, listId }),
+    ToggleTodoCheck: (_, { itemId, checked }, { todoItemsRepository }) =>
+      todoItemsRepository.toggleTodoCheck({ itemId, checked })
   }
 };

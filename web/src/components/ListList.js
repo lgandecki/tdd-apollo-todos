@@ -1,9 +1,21 @@
 /* global alert */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+import { allListsQuery } from "shared/graphql/lists/allListsQuery";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 import BaseComponent from "./BaseComponent";
+
+const addListMutation = gql`
+  mutation AddList($listName: String!) {
+    AddList(listName: $listName) {
+      name
+    }
+  }
+`;
 
 export default class ListList extends BaseComponent {
   // constructor(props) {
@@ -28,10 +40,18 @@ export default class ListList extends BaseComponent {
     return (
       this.renderRedirect() || (
         <div className="list-todos">
-          <a className="link-list-new">
-            <span className="icon-plus" />
-            New List
-          </a>
+          <Mutation
+            mutation={addListMutation}
+            refetchQueries={[{ query: allListsQuery }]}
+            variables={{ listName: "Empty List" }}
+          >
+            {addList => (
+              <a className="link-list-new" onClick={addList}>
+                <span className="icon-plus" />
+                New List
+              </a>
+            )}
+          </Mutation>
           {lists.map(list => (
             <NavLink
               to={`/lists/${list._id}`}
