@@ -15,19 +15,23 @@ export const loadApp = async (context = {}, initialPath = "/") => {
   const todoItemsRepository = await getTodoItemsWithDefaults();
   const history = createHistory();
   history.push(initialPath);
-  return render(
-    <ApolloProvider
-      client={gqlClient({
-        context: {
-          ...repositories,
-          listsRepository,
-          todoItemsRepository,
-          ...context
-        },
-        resolvers: [resolvers]
-      })}
-    >
-      <App history={history} />
-    </ApolloProvider>
-  );
+  return {
+    rendered: render(
+      <ApolloProvider
+        client={gqlClient({
+          context: {
+            ...repositories,
+            listsRepository,
+            todoItemsRepository,
+            ...context
+          },
+          resolvers: [resolvers]
+        })}
+      >
+        <App history={history} />
+      </ApolloProvider>
+    ),
+    listsRepository,
+    todoItemsRepository
+  };
 };

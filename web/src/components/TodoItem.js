@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Mutation } from "react-apollo";
+import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-// import _ from "underscore";
+import _ from "lodash";
 import classnames from "classnames";
 import BaseComponent from "./BaseComponent";
 import { showTodoItemsForList } from "../containers/ListPageContainer";
@@ -28,20 +28,29 @@ const toggleTodoCheckMutation = gql`
     }
   }
 `;
-export default class TodoItem extends BaseComponent {
+
+const renameTodoMutation = gql`
+  mutation($todoId: ID!, $newText: String!) {
+    RenameTodo(todoId: $todoId, newText: $newText) {
+      _id
+      text
+    }
+  }
+`;
+class TodoItem extends BaseComponent {
   constructor(props) {
     super(props);
-    // this.throttledUpdate = _.throttle(value => {
-    //   if (value) {
-    //     updateText.call(
-    //       {
-    //         todoId: this.props.todo._id,
-    //         newText: value
-    //       },
-    //       displayError
-    //     );
-    //   }
-    // }, 300);
+    this.throttledUpdate = _.throttle(async value => {
+      if (value) {
+        await props.client.mutate({
+          mutation: renameTodoMutation,
+          variables: {
+            todoId: this.props.todo._id,
+            newText: value
+          }
+        });
+      }
+    }, 300);
 
     this.setTodoCheckStatus = this.setTodoCheckStatus.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
@@ -64,8 +73,8 @@ export default class TodoItem extends BaseComponent {
     });
   }
 
-  updateTodo() {
-    // this.throttledUpdate(event.target.value);
+  updateTodo(event) {
+    this.throttledUpdate(event.target.value);
   }
 
   deleteTodo() {
@@ -130,6 +139,8 @@ export default class TodoItem extends BaseComponent {
     );
   }
 }
+
+export default withApollo(TodoItem);
 
 TodoItem.propTypes = {
   todo: PropTypes.object,

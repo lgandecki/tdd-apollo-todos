@@ -31,6 +31,14 @@ export class TodoItemsRepository extends MongoRepository {
     );
     return { _id: itemId, checked };
   }
+
+  async renameTodo({ todoId, newText }) {
+    await this.todoItemsCollection.update(
+      { _id: todoId },
+      { $set: { text: newText } }
+    );
+    return { _id: todoId, text: newText };
+  }
 }
 
 export const todoItemsRepository = new TodoItemsRepository();

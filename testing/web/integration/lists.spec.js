@@ -1,16 +1,17 @@
 /* eslint-env jest */
-import { wait as slowWait, Simulate } from "react-testing-library";
+import { Simulate } from "react-testing-library";
 import "dom-testing-library/extend-expect";
+import waitForExpect from "wait-for-expect";
 import "./common/linkMock";
 import "./common/sweetAlertMock";
 import { loadApp } from "./common/loadApp";
 
-const wait = (expectation, opts) =>
-  slowWait(expectation, { timeout: 500, ...opts });
+const wait = expectation => waitForExpect(expectation, 500);
 
 const loadedApp = async (...args) => {
-  const res = await loadApp(args);
-  const { container } = res;
+  const loaded = await loadApp(args);
+  const { rendered } = loaded;
+  const { container } = rendered;
   const findByValue = todoText =>
     Array.from(container.querySelectorAll("input")).filter(
       el => el.getAttribute("value") === todoText
@@ -48,12 +49,13 @@ const loadedApp = async (...args) => {
 
   await wait(() =>
     expect(
-      getTodoByText("first todo in the first list", res.container)
+      getTodoByText("first todo in the first list", container)
     ).toBeTruthy()
   );
 
   return {
-    ...res,
+    ...rendered,
+    ...loaded,
     getTodoByText,
     queryTodoByText,
     queryByTitle,
@@ -64,8 +66,7 @@ const loadedApp = async (...args) => {
 };
 
 test("Rendering component connected to the server", async () => {
-  const { getByText, getByAltText } = await loadApp();
-
+  const { rendered: { getByText, getByAltText } } = await loadApp();
   expect(getByAltText("Loading...")).toBeDefined();
 
   await wait(() => getByText("second list"));
@@ -73,7 +74,6 @@ test("Rendering component connected to the server", async () => {
 
 test("Show todos for a selected list", async () => {
   const { getByText, getTodoByText } = await loadedApp();
-
   Simulate.click(getByText("second list"));
 
   await wait(() => getTodoByText("first todo in the second list"));
@@ -167,7 +167,7 @@ test("Remove todo", async () => {
   );
 });
 
-test("check todo", async () => {
+test("check and uncheck todo", async () => {
   const { getByTitle } = await loadedApp();
 
   Simulate.change(getByTitle("check-first todo in the first list"));
@@ -177,9 +177,33 @@ test("check todo", async () => {
       true
     )
   );
+
+  Simulate.change(getByTitle("check-first todo in the first list"));
+
+  await wait(() =>
+    expect(getByTitle("check-first todo in the first list").checked).toEqual(
+      false
+    )
+  );
 });
-test("uncheck todo", () => {});
-test("rename todo", () => {});
+
+// jest fake timers
+test("rename todo by typing", async () => {
+  const { getTodoByText, todoItemsRepository } = await loadedApp();
+
+  const todoToChange = getTodoByText("first todo in the first list");
+  todoToChange.value = "different text now";
+  Simulate.change(todoToChange);
+
+  await wait(() =>
+    expect(
+      todoItemsRepository.todoItemsCollection.findOne({
+        text: "different text now"
+      })
+    ).resolves.not.toBeNull()
+  );
+});
+
 test("login to see private todo list", () => {});
 test("make a list private", () => {});
 test("create an account", () => {});
