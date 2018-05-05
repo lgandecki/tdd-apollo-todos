@@ -177,7 +177,6 @@ describe("working without the server", () => {
         win.sessionStorage.clear();
       }
     });
-    cy.wait(2000)
   });
   it("shows lists coming from the server", () => {
     getByText("second list").click();
@@ -189,6 +188,8 @@ describe("working without the server", () => {
     wait(() => getByText("Empty List"));
   });
   it("Remove list and redirect", () => {
+    cy.wait(3000)
+
     getByTitle("second list").should("exist");
 
     Simulate.click(cy.getByTitle("Delete list"));
