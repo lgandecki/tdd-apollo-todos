@@ -34,19 +34,6 @@ const loadedApp = async (...args) => {
 
   const queryTodoByText = todoText => findByValue(todoText);
 
-  const queryByTitle = title =>
-    Array.from(container.querySelectorAll("*")).filter(
-      el => el.title === title
-    )[0];
-
-  const getByTitle = title => {
-    const el = queryByTitle(title);
-    if (!el) {
-      throw new Error(`Not found by title ${title}`);
-    }
-    return el;
-  };
-
   const deleteTodo = name => {
     const found = Array.from(
       findByValue(name, container).parentNode.querySelectorAll("*")
@@ -66,9 +53,7 @@ const loadedApp = async (...args) => {
     getTodoByText,
     queryTodoByText,
     findByValue,
-    deleteTodo,
-    queryByTitle,
-    getByTitle
+    deleteTodo
   };
 };
 

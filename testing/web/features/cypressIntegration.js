@@ -188,12 +188,12 @@ describe("working without the server", () => {
     wait(() => getByText("Empty List"));
   });
   it("Remove list and redirect", () => {
-    cy.getByTitlePureNew("second list").should("exist");
+    getByTitle("second list").should("exist");
 
-    Simulate.click(cy.getByTitlePureNew("Delete list"));
+    Simulate.click(cy.getByTitle("Delete list"));
     Simulate.click(getByText("Delete it!"));
 
-    cy.getByTitlePureNew("second list").should("not.exist");
+    queryByTitle("second list").should("not.exist");
     // should verify by the actual todo "first todo in the first list"
   });
 });
