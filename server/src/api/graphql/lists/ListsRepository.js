@@ -11,7 +11,6 @@ export class ListsRepository extends MongoRepository {
   }
 
   async addList({ listName: name }) {
-    console.log("Gandecki name", name);
     const newList = {
       _id: new MongoClient.ObjectId().toString(),
       name,

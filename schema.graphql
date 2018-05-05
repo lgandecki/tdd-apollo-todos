@@ -1,6 +1,7 @@
 type Query {
   Lists: [List]
   TodoItems(listId: ID!): [TodoItem]!
+  CurrentUser: User
 }
 
 type Mutation {
@@ -11,6 +12,8 @@ type Mutation {
   AddTodo(listId: ID!, text: String!): TodoItem
   ToggleTodoCheck(itemId: ID!, checked: Boolean!): TodoItem
   RenameTodo(todoId: ID!, newText: String!): TodoItem
+  AddUser(email: String!, password: String!): User!
+  LoginUser(email: String!, password: String!): User!
 }
 
 type List {
@@ -23,5 +26,11 @@ type TodoItem {
   _id: ID
   text: String
   checked: Boolean
+}
+
+type User {
+  _id: ID
+  email: String
+  password: Boolean
 }
 

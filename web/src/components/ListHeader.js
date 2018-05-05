@@ -289,6 +289,6 @@ export default class ListHeader extends BaseComponent {
 }
 
 ListHeader.propTypes = {
-  list: PropTypes.object,
-  menuOpen: PropTypes.object.isRequired
+  list: PropTypes.object
+  // menuOpen: PropTypes.object.isRequired
 };

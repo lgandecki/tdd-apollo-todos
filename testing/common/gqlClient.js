@@ -16,7 +16,12 @@ export default function gqlClient({ context, resolvers = [] }) {
   return new ApolloClient({
     link: new SchemaLink({
       schema,
-      context
+      context: {
+        req: {
+          login: () => {}
+        },
+        ...context
+      }
     }),
     cache: new InMemoryCache()
   });

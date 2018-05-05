@@ -8,6 +8,13 @@ import { loadApp } from "./common/loadApp";
 
 const wait = expectation => waitForExpect(expectation, 500);
 
+const type = (el, value) => {
+  Simulate.focus(el);
+  // eslint-disable-next-line no-param-reassign
+  el.value = value;
+  Simulate.change(el);
+};
+
 const loadedApp = async (...args) => {
   const loaded = await loadApp(args);
   const { rendered } = loaded;
@@ -58,10 +65,10 @@ const loadedApp = async (...args) => {
     ...loaded,
     getTodoByText,
     queryTodoByText,
-    queryByTitle,
-    getByTitle,
     findByValue,
-    deleteTodo
+    deleteTodo,
+    queryByTitle,
+    getByTitle
   };
 };
 
@@ -130,7 +137,7 @@ test("Rename List on blur", async () => {
 
   Simulate.click(getByTestId("editListName"));
 
-  findByValue("first list").value = "changed list name";
+  type(findByValue("first list"), "changed list name");
   Simulate.blur(findByValue("first list"));
 
   // this works because the value is not considered text - so if we can find this by text
@@ -192,8 +199,7 @@ test("rename todo by typing", async () => {
   const { getTodoByText, todoItemsRepository } = await loadedApp();
 
   const todoToChange = getTodoByText("first todo in the first list");
-  todoToChange.value = "different text now";
-  Simulate.change(todoToChange);
+  type(todoToChange, "different text now");
 
   await wait(() =>
     expect(
@@ -208,6 +214,33 @@ test("login to see private todo list", () => {});
 test("make a list private", () => {});
 test("create an account", () => {});
 
+describe("Signing up", () => {
+  test("Email Required error", async () => {
+    const { getByPlaceholderText, getByText } = await loadedApp();
+    Simulate.click(getByText("Join"));
+    type(getByPlaceholderText("Password"), "MyPassword");
+    type(getByPlaceholderText("Confirm Password"), "MyPassword");
+    Simulate.submit(getByText("Join Now"));
+    await wait(() => getByText("Email Required"));
+  });
+
+  test("Password required error", async () => {
+    const { getByText } = await loadedApp();
+    Simulate.click(getByText("Join"));
+    Simulate.submit(getByText("Join Now"));
+    await wait(() => getByText("Password Required"));
+  });
+
+  test("Password match error", async () => {
+    const { getByText, getByPlaceholderText } = await loadedApp();
+    Simulate.click(getByText("Join"));
+    type(getByPlaceholderText("Password"), "MyPassword");
+    type(getByPlaceholderText("Confirm Password"), "MyAPassword");
+    Simulate.submit(getByText("Join Now"));
+    await wait(() => getByText("Password doesn't match the confirmation"));
+  });
+});
+
 // test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list)
 // do this mostly in server - as those things are not easy from the UI - should not be even possible to be honest.
 // Perfect examples of server tests
@@ -218,3 +251,5 @@ test("create an account", () => {});
 
 // Tests for when no lists exist
 // Tests for when no todo exist
+
+// Can I make the syntax .click and .type here, instead of changing cypress tests to use this type() and Simulate.click functions? I think I would have to use proxy.

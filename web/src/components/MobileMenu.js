@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import BaseComponent from "./BaseComponent";
 
 class MobileMenu extends BaseComponent {
@@ -24,7 +23,7 @@ class MobileMenu extends BaseComponent {
 }
 
 MobileMenu.propTypes = {
-  menuOpen: PropTypes.object.isRequired
+  // menuOpen: PropTypes.object.isRequired
 };
 
 export default MobileMenu;

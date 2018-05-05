@@ -21,7 +21,8 @@ export default class UserMenu extends BaseComponent {
   renderLoggedIn() {
     const { open } = this.state;
     const { user, logout } = this.props;
-    const email = user.emails[0].address;
+    console.log("Gandecki this.props", this.props);
+    const { email } = user;
     const emailLocalPart = email.substring(0, email.indexOf("@"));
 
     return (

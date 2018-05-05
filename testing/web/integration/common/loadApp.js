@@ -9,10 +9,12 @@ import gqlClient from "../../../common/gqlClient";
 import getListsWithDefaults from "../../../common/getListsWithDefaults";
 import { repositories } from "../../../../server/src/api/graphql/repositories";
 import getTodoItemsWithDefaults from "../../../common/getTodoItemsWithDefaults";
+import getUsersWithDefaults from "../../../common/getUsersWithDefaults";
 
 export const loadApp = async (context = {}, initialPath = "/") => {
   const listsRepository = await getListsWithDefaults();
   const todoItemsRepository = await getTodoItemsWithDefaults();
+  const usersRepository = await getUsersWithDefaults();
   const history = createHistory();
   history.push(initialPath);
   return {
@@ -23,6 +25,10 @@ export const loadApp = async (context = {}, initialPath = "/") => {
             ...repositories,
             listsRepository,
             todoItemsRepository,
+            usersRepository,
+            req: {
+              login: () => {}
+            },
             ...context
           },
           resolvers: [resolvers]

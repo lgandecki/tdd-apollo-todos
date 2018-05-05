@@ -7,6 +7,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import createHistory from "history/createBrowserHistory";
 import { allListsQuery } from "shared/graphql/lists/allListsQuery";
+import { currentUserQuery } from "shared/graphql/users/currentUserQuery";
 // import { Lists } from "../../api/lists/lists.js";
 // import UserMenu from "../components/UserMenu.jsx";
 import ListList from "../components/ListList";
@@ -14,6 +15,8 @@ import ListList from "../components/ListList";
 // import ConnectionNotification from "../components/ConnectionNotification.jsx";
 import Loading from "../components/Loading";
 import ListPageContainer from "../containers/ListPageContainer";
+import UserMenu from "../components/UserMenu";
+import AuthPageJoin from "../pages/AuthPageJoin";
 // import AuthPageSignIn from "../pages/AuthPageSignIn.jsx";
 // import AuthPageJoin from "../pages/AuthPageJoin.jsx";
 // import NotFoundPage from "../pages/NotFoundPage.jsx";
@@ -42,6 +45,7 @@ export default class App extends Component {
   }
 
   logout() {
+    console.log("loggin out");
     // Meteor.logout();
     // this.setState({
     //   redirectTo: this.state.defaultList
@@ -72,6 +76,15 @@ export default class App extends Component {
     return (
       <div id="container" className={this.state.menuOpen ? "menu-open" : ""}>
         <section id="menu">
+          <Query query={currentUserQuery}>
+            {({ loading, data }) => {
+              if (loading) {
+                return <Loading key="loading" />;
+              }
+              const { CurrentUser } = data;
+              return <UserMenu user={CurrentUser} logout={this.logout} />;
+            }}
+          </Query>
           <ListList lists={lists} />
         </section>
         <div className="content-overlay" onClick={this.closeMenu} />
@@ -99,7 +112,7 @@ export default class App extends Component {
                 />
                 <Route
                   path="/join"
-                  render={() => <ListPageContainer {...commonChildProps} />}
+                  render={() => <AuthPageJoin {...commonChildProps} />}
                 />
                 <Route path="/*" render={() => <Loading key="loading" />} />
               </Switch>

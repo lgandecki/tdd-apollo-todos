@@ -6,5 +6,8 @@
         "node": "current"
       }
     }]
+  ],
+  "plugins": [
+    "babel-plugin-inline-import"
   ]
 }
