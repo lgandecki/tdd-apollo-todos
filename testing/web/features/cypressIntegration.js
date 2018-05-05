@@ -177,6 +177,7 @@ describe("working without the server", () => {
         win.sessionStorage.clear();
       }
     });
+    cy.wait(2000)
   });
   it("shows lists coming from the server", () => {
     getByText("second list").click();
