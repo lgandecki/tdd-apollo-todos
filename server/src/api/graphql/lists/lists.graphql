@@ -9,6 +9,7 @@ type Query {
 }
 
 type Mutation {
-  AddList(ListName: String!): List
-  RemoveList(ListName: String!): String
+  AddList(listName: String!): List
+  RemoveList(listId: ID!): String
+  ChangeListName(listId: ID!, newName: String!): List
 }

@@ -2,7 +2,7 @@ module.exports = {
   rootDir: "../../",
   displayName: "real web integration",
   moduleNameMapper: {
-    "\\.(css|less)$": "<rootDir>/testing/fileMock.js"
+    "\\.(css|less|svg)$": "<rootDir>/testing/fileMock.js"
   },
   moduleDirectories: [
     "node_modules",

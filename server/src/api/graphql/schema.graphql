@@ -1,4 +1,5 @@
 # import * from "lists/lists.graphql"
+# import * from "todoItems/todoItems.graphql"
 
 schema {
     query: Query

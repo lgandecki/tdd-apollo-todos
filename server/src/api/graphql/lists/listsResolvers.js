@@ -4,6 +4,9 @@ export default {
   },
   Mutation: {
     AddList: (_, input, context) => context.listsRepository.addList(input),
-    RemoveList: (_, input, context) => context.listsRepository.removeList(input)
+    RemoveList: (_, input, context) =>
+      context.listsRepository.removeList(input),
+    ChangeListName: (_, input, context) =>
+      context.listsRepository.changeListName(input)
   }
 };

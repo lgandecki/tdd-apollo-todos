@@ -1,20 +1,21 @@
-import PropTypes from "prop-types";
+/* eslint-disable react/prop-types */
 import React, { Fragment } from "react";
 
 export default class PureAddLists extends React.Component {
-  static propTypes = {
-    addList: PropTypes.func.isRequired
-  };
+  constructor() {
+    super();
+    this.state = { newListName: "" };
+    this.changeNewListName = this.changeNewListName.bind(this);
+    this.addList = this.addList.bind(this);
+  }
 
-  state = { newListName: "" };
-
-  changeNewListName = e => {
+  changeNewListName(e) {
     this.setState({ newListName: e.target.value });
-  };
+  }
 
-  addList = () => {
+  addList() {
     this.props.addList(this.state.newListName);
-  };
+  }
 
   render() {
     return (
