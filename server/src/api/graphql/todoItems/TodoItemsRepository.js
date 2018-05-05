@@ -1,3 +1,4 @@
+import MongoClient from "mongodb";
 import { MongoRepository } from "../../common/MongoRepository";
 
 export class TodoItemsRepository extends MongoRepository {
@@ -15,6 +16,7 @@ export class TodoItemsRepository extends MongoRepository {
 
   async addTodo({ text, listId }) {
     const returned = await this.todoItemsCollection.insert({
+      _id: new MongoClient.ObjectId().toString(),
       text,
       listId,
       checked: false

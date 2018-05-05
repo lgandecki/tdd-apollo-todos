@@ -33,3 +33,5 @@ test("returns todo items for a given list", async () => {
     checked: true
   });
 });
+
+test("add a new todo and rename it", async () => {});

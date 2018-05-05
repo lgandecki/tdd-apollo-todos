@@ -208,6 +208,13 @@ test("login to see private todo list", () => {});
 test("make a list private", () => {});
 test("create an account", () => {});
 
-// test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list
+// test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list)
+// do this mostly in server - as those things are not easy from the UI - should not be even possible to be honest.
+// Perfect examples of server tests
 
 // add subscriptions. Test it by calling a mutation as someone else (fake context)
+
+// Problems with ID
+
+// Tests for when no lists exist
+// Tests for when no todo exist
