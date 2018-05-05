@@ -140,6 +140,11 @@ const getApolloClient = async (context = {}) => {
   console.log("Gandecki process.env.BABEL_ENV", process.env.BABEL_ENV);
 
   const listsRepository = await getListsWithDefaults();
+  await listsRepository.listsCollection.insert({
+    _id: "thirdId",
+    name: "third list",
+    incompleteCount: 0
+  });
   const todoItemsRepository = await getTodoItemsWithDefaults();
   return gqlClient({
     context: {
@@ -188,9 +193,7 @@ describe("working without the server", () => {
     wait(() => getByText("Empty List"));
   });
   it("Remove list and redirect", () => {
-    cy.wait(3000)
-
-    getByTitle("second list").should("exist");
+    getByTitle("third list").should("exist");
 
     Simulate.click(cy.getByTitle("Delete list"));
     Simulate.click(getByText("Delete it!"));
