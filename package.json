@@ -55,7 +55,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "cypress": "^2.1.0",
-    "cypress-testing-library": "^1.2.0",
+    "cypress-testing-library": "^2.0.0",
     "detox": "^7.0.0",
     "detox-expo-helpers": "^0.2.0",
     "dom-testing-library": "^2.1.0",
@@ -80,7 +80,7 @@
     "prettier": "^1.11.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-testing-library": "^2.5.2",
+    "react-testing-library": "^3.0.1",
     "wait-for-expect": "^0.6.0"
   },
   "dependencies": {
