@@ -18,25 +18,25 @@ const type = (el, value) => {
 const loadedApp = async (...args) => {
   const loaded = await loadApp(args);
   const { rendered } = loaded;
-  const { container } = rendered;
+  const { container, queryByValue } = rendered;
   const findByValue = todoText =>
     Array.from(container.querySelectorAll("input")).filter(
       el => el.getAttribute("value") === todoText
     )[0];
 
   const getTodoByText = todoText => {
-    const el = findByValue(todoText);
+    const el = queryByValue(todoText);
     if (!el) {
       throw new Error("Todo not visible in the dom");
     }
     return el;
   };
 
-  const queryTodoByText = todoText => findByValue(todoText);
+  const queryTodoByText = todoText => queryByValue(todoText);
 
   const deleteTodo = name => {
     const found = Array.from(
-      findByValue(name, container).parentNode.querySelectorAll("*")
+      queryByValue(name, container).parentNode.querySelectorAll("*")
     ).filter(el => el.dataset.testid === "deleteItem");
     Simulate.click(found);
   };

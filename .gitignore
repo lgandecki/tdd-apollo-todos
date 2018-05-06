@@ -1,2 +1,4 @@
 node_modules
+testing/web/cypress/videos
+testing/web/cypress/screenshots
 .idea

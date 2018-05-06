@@ -163,7 +163,7 @@ const Simulate = {
 const wait = cb => cb();
 
 describe("working without the server", () => {
-  beforeEach(() => {
+  beforeEach((done) => {
     cy.visit(`http://localhost:3000`, {
       onLoad: win => {
         cy.spy(win.console, "log");
@@ -172,6 +172,7 @@ describe("working without the server", () => {
             .then(apolloClient => {
               Object.assign(win.__APOLLO_CLIENT__.link, apolloClient.link);
               win.__APOLLO_CLIENT__.resetStore();
+              done()
             })
             .catch(e => {
               console.log("Gandecki e", e);
@@ -198,8 +199,7 @@ describe("working without the server", () => {
     Simulate.click(cy.getByTitle("Delete list"));
     Simulate.click(getByText("Delete it!"));
 
-    cy.wait(5000);
-    queryByTitle("second list").should("not.exist");
+    queryByTitle("first list").should("not.exist");
     // should verify by the actual todo "first todo in the first list"
   });
 });
