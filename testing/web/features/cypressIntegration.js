@@ -198,6 +198,7 @@ describe("working without the server", () => {
     Simulate.click(cy.getByTitle("Delete list"));
     Simulate.click(getByText("Delete it!"));
 
+    cy.wait(5000);
     queryByTitle("second list").should("not.exist");
     // should verify by the actual todo "first todo in the first list"
   });
