@@ -116,3 +116,8 @@ jobs:
           name: End to end test
           command: npm run test:e2e:web
 
+      - store_artifacts:
+          path: testing/web/cypress/videos/
+
+      - store_artifacts:
+          path: testing/web/cypress/screenshots/
