@@ -12,5 +12,17 @@ export default async function getListsWithDefaults() {
     name: "second list",
     incompleteCount: 4
   });
+  await listsRepository.listsCollection.insert({
+    _id: "privateList",
+    name: "private list",
+    incompleteCount: 0,
+    userId: "preExistingUserId"
+  });
+  await listsRepository.listsCollection.insert({
+    _id: "hiddenList",
+    name: "hidden list",
+    incompleteCount: 0,
+    userId: "notUsedUserId"
+  });
   return listsRepository;
 }

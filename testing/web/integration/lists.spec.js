@@ -226,6 +226,42 @@ describe("Signing up", () => {
   });
 });
 
+// This way we verify that the way we create user is correct.
+// If we only tested registering user, and then used a mocked user in all other tests
+// this crucial part of the app would be left unsafe.
+// For example - if creating the user messed up saving the password:
+// - You would still get in so this test would pass
+// - All the tests that assume properly created user would fail
+// Another way to do this would be to go straight for the db and verify correctly created user
+
+// TODO The more I think about it - I think it would be better to split those tests and verify the db,
+// or even go directly to the repository and try to log in with the given username and password
+test("Register user, logout, login", async () => {
+  const {
+    getByText,
+    getByPlaceholderText,
+    queryByText,
+    getByTitle
+  } = await loadedApp();
+
+  Simulate.click(getByText("Join"));
+  type(getByPlaceholderText("Your Email"), "lgandecki@thebrain.pro");
+  type(getByPlaceholderText("Password"), "MyPassword");
+  type(getByPlaceholderText("Confirm Password"), "MyPassword");
+  Simulate.click(getByText("Join Now"));
+  Simulate.submit(getByText("Join Now"));
+  await wait(() => getByText("lgandecki"));
+  await wait(() => expect(queryByText("Join Now")).not.toBeInTheDOM());
+  Simulate.click(getByTitle("Make list private"));
+  await wait(() => getByTitle("Make list public"));
+  Simulate.click(getByText("lgandecki"));
+  Simulate.click(getByText(/Logout/));
+  await wait(() => expect(queryByText("lgandecki")).not.toBeInTheDOM());
+  await wait(() => expect(queryByText("first list")).not.toBeInTheDOM());
+  // const users = await usersRepository.usersCollection.find().toArray();
+  // console.log("Gandecki users", users);
+});
+
 // test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list)
 // do this mostly in server - as those things are not easy from the UI - should not be even possible to be honest.
 // Perfect examples of server tests

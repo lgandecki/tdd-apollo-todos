@@ -1,4 +1,5 @@
 import MongoClient from "mongodb";
+// import bcrypt from "bcryptjs";
 import { MongoRepository } from "../../common/MongoRepository";
 
 export class UsersRepository extends MongoRepository {

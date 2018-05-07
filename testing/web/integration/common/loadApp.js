@@ -11,26 +11,36 @@ import { repositories } from "../../../../server/src/api/graphql/repositories";
 import getTodoItemsWithDefaults from "../../../common/getTodoItemsWithDefaults";
 import getUsersWithDefaults from "../../../common/getUsersWithDefaults";
 
-export const loadApp = async (context = {}, initialPath = "/") => {
+export const loadApp = async (passedContext = {}, initialPath = "/") => {
   const listsRepository = await getListsWithDefaults();
   const todoItemsRepository = await getTodoItemsWithDefaults();
   const usersRepository = await getUsersWithDefaults();
   const history = createHistory();
   history.push(initialPath);
+  const context = {
+    user: {},
+    ...repositories,
+    listsRepository,
+    todoItemsRepository,
+    usersRepository,
+    req: {
+      logIn: user => {
+        Object.assign(context.user, user);
+      },
+      logOut: () => {
+        delete context.user._id;
+        delete context.user.email;
+        // delete context.user.password;
+        console.log("Gandecki context.user", context.user);
+      }
+    },
+    ...passedContext
+  };
   return {
     rendered: render(
       <ApolloProvider
         client={gqlClient({
-          context: {
-            ...repositories,
-            listsRepository,
-            todoItemsRepository,
-            usersRepository,
-            req: {
-              login: () => {}
-            },
-            ...context
-          },
+          context,
           resolvers: [resolvers]
         })}
       >
@@ -38,6 +48,7 @@ export const loadApp = async (context = {}, initialPath = "/") => {
       </ApolloProvider>
     ),
     listsRepository,
-    todoItemsRepository
+    todoItemsRepository,
+    usersRepository
   };
 };

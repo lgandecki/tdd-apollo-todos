@@ -9,7 +9,7 @@ const Simulate = {
 const type = (el, value) => {
   el.type(value, { delay: 1 });
 };
-const { getByText, getByPlaceholderText } = cy;
+const { getByText, getByPlaceholderText, queryByText } = cy;
 describe("working with the server", () => {
   // eslint-disable-next-line jest/no-hooks
   beforeEach(() => {
@@ -25,6 +25,6 @@ describe("working with the server", () => {
     type(getByPlaceholderText("Confirm Password"), "MyPassword");
     Simulate.click(getByText("Join Now"));
     getByText("lgandecki");
-    // queryByText("Join Now").should("not.exist");
+    queryByText("Join Now").should("not.exist");
   });
 });

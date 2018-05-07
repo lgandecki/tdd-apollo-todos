@@ -26,3 +26,4 @@ module.exports = wallaby => ({
     wallaby.testFramework.configure(jestConfig);
   }
 });
+

@@ -34,6 +34,16 @@ const addNewTodoMutation = gql`
   }
 `;
 
+const toggleListPrivacyMutation = gql`
+  mutation($listId: ID!) {
+    ToggleListPrivacy(listId: $listId) {
+      _id
+      userId
+      name
+    }
+  }
+`;
+
 // import {
 //   updateName,
 //   makePublic,
@@ -117,7 +127,9 @@ export default class ListHeader extends BaseComponent {
   }
 
   toggleListPrivacy() {
-    // const { list } = this.props;
+    const { list } = this.props;
+    console.log("Gandecki list", list);
+
     // if (list.userId) {
     //   makePublic.call({ listId: list._id }, displayError);
     // } else {
@@ -169,13 +181,20 @@ export default class ListHeader extends BaseComponent {
             <span className="icon-cog" />
           </div>
           <div className="options-web">
-            <a className="nav-item" onClick={this.toggleListPrivacy}>
-              {list.userId ? (
-                <span className="icon-lock" title="Make list public" />
-              ) : (
-                <span className="icon-unlock" title="Make list private" />
+            <Mutation
+              mutation={toggleListPrivacyMutation}
+              variables={{ listId: list._id }}
+            >
+              {toggleListPrivacy => (
+                <a className="nav-item" onClick={toggleListPrivacy}>
+                  {list.userId ? (
+                    <span className="icon-lock" title="Make list public" />
+                  ) : (
+                    <span className="icon-unlock" title="Make list private" />
+                  )}
+                </a>
               )}
-            </a>
+            </Mutation>
             <a className="nav-item trash" onClick={this.deleteConfirmation}>
               <span
                 className="icon-trash"

@@ -8,18 +8,21 @@ type Mutation {
   AddList(listName: String!): List
   RemoveList(listId: ID!): String
   ChangeListName(listId: ID!, newName: String!): List
+  ToggleListPrivacy(listId: ID!): List
   RemoveItem(itemId: ID!): String
   AddTodo(listId: ID!, text: String!): TodoItem
   ToggleTodoCheck(itemId: ID!, checked: Boolean!): TodoItem
   RenameTodo(todoId: ID!, newText: String!): TodoItem
   AddUser(email: String!, password: String!): User!
   LoginUser(email: String!, password: String!): User!
+  LogoutUser: String
 }
 
 type List {
   _id: ID
   name: String
   incompleteCount: Int
+  userId: ID
 }
 
 type TodoItem {

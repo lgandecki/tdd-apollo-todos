@@ -30,7 +30,6 @@ export default class App extends Component {
       menuOpen: false
     };
     this.closeMenu = this.toggleMenu.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -42,14 +41,6 @@ export default class App extends Component {
 
   toggleMenu() {
     this.setState(prevState => ({ menuOpen: !prevState.menuOpen }));
-  }
-
-  logout() {
-    console.log("loggin out");
-    // Meteor.logout();
-    // this.setState({
-    //   redirectTo: this.state.defaultList
-    // });
   }
 
   renderRedirect(location, lists) {
@@ -82,7 +73,8 @@ export default class App extends Component {
                 return <Loading key="loading" />;
               }
               const { CurrentUser } = data;
-              return <UserMenu user={CurrentUser} logout={this.logout} />;
+              console.log("Gandecki CurrentUser", CurrentUser);
+              return <UserMenu user={CurrentUser} />;
             }}
           </Query>
           <ListList lists={lists} />

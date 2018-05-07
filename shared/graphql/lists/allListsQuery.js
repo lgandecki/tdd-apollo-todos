@@ -6,6 +6,7 @@ export const allListsQuery = gql`
       _id
       name
       incompleteCount
+      userId
     }
   }
 `;

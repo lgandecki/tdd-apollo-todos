@@ -51,6 +51,7 @@ class JoinPage extends BaseComponent {
       },
       refetchQueries: [{ query: currentUserQuery }]
     });
+    this.redirectTo("/");
     //
     // Accounts.createUser(
     //   {

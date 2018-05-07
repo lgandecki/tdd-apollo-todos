@@ -2,6 +2,7 @@ type List {
   _id: ID
   name: String
   incompleteCount: Int
+  userId: ID
 }
 
 type Query {
@@ -12,4 +13,5 @@ type Mutation {
   AddList(listName: String!): List
   RemoveList(listId: ID!): String
   ChangeListName(listId: ID!, newName: String!): List
+  ToggleListPrivacy(listId: ID!): List
 }
