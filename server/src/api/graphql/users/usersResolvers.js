@@ -17,8 +17,17 @@ export default {
       });
       return user;
     },
-    LoginUser: (_, input, context) =>
-      context.usersRepository.findByUsernameAndPassword(input),
+    LoginUser: async (_, input, context) => {
+      const user = await context.usersRepository.findByUsernameAndPassword(
+        input
+      );
+      if (user) {
+        context.req.logIn(user, err => {
+          if (err) throw err;
+        });
+      }
+      return user;
+    },
     LogoutUser: (_, input, context) => context.req.logOut()
   }
 };

@@ -17,6 +17,9 @@ export class UsersRepository extends MongoRepository {
     const insertedUser = await this.usersCollection.insert(newUser);
     return insertedUser.ops[0];
   }
+  findByUsernameAndPassword({ email, password }) {
+    return this.usersCollection.findOne({ email, password });
+  }
 }
 
 export const usersRepository = new UsersRepository();

@@ -114,6 +114,38 @@ test("Register user, logout, login", async () => {
   // console.log("Gandecki users", users);
 });
 
+test("Register logout login", async () => {
+  const {
+    getByText,
+    getByPlaceholderText,
+    queryByText,
+    getByTitle,
+    getByTestId
+  } = await loadedApp();
+
+  fireEvent.click(getByText("Join"));
+  type(getByPlaceholderText("Your Email"), "lgandecki@thebrain.pro");
+  type(getByPlaceholderText("Password"), "MyPassword");
+  type(getByPlaceholderText("Confirm Password"), "MyPassword");
+  fireEvent.click(getByText("Join Now"));
+  await wait(() => getByText("lgandecki"));
+  await wait(() => expect(queryByText("Join Now")).not.toBeInTheDOM());
+  fireEvent.click(getByTitle("Make list private"));
+  await wait(() => getByTitle("Make list public"));
+  await wait(() => expect(queryByText("first list")).toBeInTheDOM());
+  fireEvent.click(getByText("lgandecki"));
+  fireEvent.click(getByText(/Logout/));
+  await wait(() => expect(queryByText("lgandecki")).not.toBeInTheDOM());
+  await wait(() => expect(queryByText("first list")).not.toBeInTheDOM());
+
+  fireEvent.click(getByText("Sign In"));
+  type(getByPlaceholderText("Your Email"), "lgandecki@thebrain.pro");
+  type(getByPlaceholderText("Password"), "MyPassword");
+  fireEvent.click(getByTestId("signInNow"));
+  await wait(() => expect(queryByText("lgandecki")).toBeInTheDOM());
+  await wait(() => expect(queryByText("first list")).toBeInTheDOM());
+});
+
 // test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list)
 // do this mostly in server - as those things are not easy from the UI - should not be even possible to be honest.
 // Perfect examples of server tests

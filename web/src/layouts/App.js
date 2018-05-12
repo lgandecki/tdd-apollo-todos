@@ -17,6 +17,7 @@ import Loading from "../components/Loading";
 import ListPageContainer from "../containers/ListPageContainer";
 import UserMenu from "../components/UserMenu";
 import AuthPageJoin from "../pages/AuthPageJoin";
+import AuthPageSignIn from "../pages/AuthPageSignIn";
 // import AuthPageSignIn from "../pages/AuthPageSignIn.jsx";
 // import AuthPageJoin from "../pages/AuthPageJoin.jsx";
 // import NotFoundPage from "../pages/NotFoundPage.jsx";
@@ -103,7 +104,7 @@ export default class App extends Component {
                 />
                 <Route
                   path="/signin"
-                  render={() => <ListPageContainer {...commonChildProps} />}
+                  render={() => <AuthPageSignIn {...commonChildProps} />}
                 />
                 <Route
                   path="/join"
