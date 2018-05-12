@@ -61,8 +61,8 @@ export default class ListList extends BaseComponent {
               activeClassName="active"
             >
               {list.userId ? <span className="icon-lock" /> : null}
-              {list.incompleteCount ? (
-                <span className="count-list">{list.incompleteCount}</span>
+              {list.todos.length ? (
+                <span className="count-list">{list.todos.length}</span>
               ) : null}
               {list.name}
             </NavLink>

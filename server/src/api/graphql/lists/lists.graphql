@@ -3,6 +3,7 @@ type List {
   name: String
   incompleteCount: Int
   userId: ID
+  todos: [TodoItem]!
 }
 
 type Query {

@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 import SweetAlert from "sweetalert2-react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { allListsQuery } from "shared/graphql/lists/allListsQuery";
 import BaseComponent from "./BaseComponent";
 import MobileMenu from "./MobileMenu";
-import { showTodoItemsForList } from "../containers/ListPageContainer";
 
 const removeListMutation = gql`
   mutation RemoveList($listId: ID!) {
@@ -26,9 +26,10 @@ const changeListNameMutation = gql`
 `;
 
 const addNewTodoMutation = gql`
-  mutation($listId: ID!, $text: String!) {
+  mutation AddTodo($listId: ID!, $text: String!) {
     AddTodo(listId: $listId, text: $text) {
       _id
+      checked
       text
     }
   }
@@ -138,6 +139,7 @@ export default class ListHeader extends BaseComponent {
   }
 
   createTodo(event, addTodo) {
+    console.log("on create I guess");
     event.preventDefault();
     const { newTodoInput } = this;
     const newTodoText = newTodoInput.value;
@@ -159,7 +161,7 @@ export default class ListHeader extends BaseComponent {
           <span className="title-wrapper" data-testid="editListName">
             {list.name}
           </span>
-          <span className="count-list">{list.incompleteCount}</span>
+          <span className="count-list">{list.todos.length}</span>
         </h1>
         <div className="nav-group right">
           <div className="nav-item options-mobile">
@@ -278,12 +280,22 @@ export default class ListHeader extends BaseComponent {
           {editing ? this.renderEditingHeader() : this.renderDefaultHeader()}
           <Mutation
             mutation={addNewTodoMutation}
-            refetchQueries={[
-              {
-                query: showTodoItemsForList,
-                variables: { listId: this.props.list._id }
+            optimisticResponse={({ text }) => ({
+              __typename: "Mutation",
+              AddTodo: {
+                __typename: "TodoItem",
+                _id: "randomId",
+                checked: false,
+                text
               }
-            ]}
+            })}
+            update={(proxy, { data: { AddTodo } }) => {
+              const data = proxy.readQuery({ query: allListsQuery });
+              data.Lists.find(l => l._id === this.props.list._id).todos.push(
+                AddTodo
+              );
+              proxy.writeQuery({ query: allListsQuery, data });
+            }}
           >
             {addTodo => (
               <form
