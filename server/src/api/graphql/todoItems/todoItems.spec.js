@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import gql from "graphql-tag";
-import gqlClient from "todos-apollo-testing/testing/common/gqlClient";
-import getTodoItemsWithDefaults from "todos-apollo-testing/testing/common/getTodoItemsWithDefaults";
-import "todos-apollo-testing/testing/common/customJestMatcher";
+import gqlClient from "../../../../../testing/common/gqlClient";
+import getTodoItemsWithDefaults from "../../../../../testing/common/getTodoItemsWithDefaults";
+import "../../../../../testing/common/customJestMatcher";
 import todoItemsResolvers from "./todoItemsResolvers";
 
 test("returns todo items for a given list", async () => {

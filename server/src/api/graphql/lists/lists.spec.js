@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import gql from "graphql-tag";
-import gqlClient from "todos-apollo-testing/testing/common/gqlClient";
-import getListsWithDefaults from "todos-apollo-testing/testing/common/getListsWithDefaults";
-import "todos-apollo-testing/testing/common/customJestMatcher";
+import gqlClient from "../../../../../testing/common/gqlClient";
+import getListsWithDefaults from "../../../../../testing/common/getListsWithDefaults";
+import "../../../../../testing/common/customJestMatcher";
 import listsResolvers from "./listsResolvers";
 
 const getAllLists = async (listsRepository, passedContext) => {
@@ -124,10 +124,9 @@ describe("Removing list", () => {
   test("Can remove public list", async () => {
     const listsRepository = await getListsWithDefaults();
 
-    const { AddList: { _id } } = await addList(
-      "My beautiful list",
-      listsRepository
-    );
+    const {
+      AddList: { _id }
+    } = await addList("My beautiful list", listsRepository);
 
     const Lists = await removeList(_id, listsRepository);
 
