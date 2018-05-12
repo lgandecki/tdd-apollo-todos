@@ -4,9 +4,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-import { allListsQuery } from "shared/graphql/lists/allListsQuery";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { allListsQuery } from "../queries/lists/allListsQuery";
 import BaseComponent from "./BaseComponent";
 
 const addListMutation = gql`
@@ -61,8 +61,8 @@ export default class ListList extends BaseComponent {
               activeClassName="active"
             >
               {list.userId ? <span className="icon-lock" /> : null}
-              {list.incompleteCount ? (
-                <span className="count-list">{list.incompleteCount}</span>
+              {list.todos.length ? (
+                <span className="count-list">{list.todos.length}</span>
               ) : null}
               {list.name}
             </NavLink>

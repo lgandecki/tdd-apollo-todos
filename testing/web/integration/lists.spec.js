@@ -45,6 +45,7 @@ test("Add Todo", async () => {
 });
 
 // / Optimistic UI for adding the todo
+// TODO Test that the optimistic UI works - we would have to "slow down the response"
 
 // / Refactor so the inputs are not known to the repositories
 
@@ -55,7 +56,7 @@ test("Remove todo", async () => {
   deleteTodo("first todo in the first list");
 
   await wait(() =>
-    expect(queryTodoByText("first todo in the second list")).not.toBeInTheDOM()
+    expect(queryTodoByText("first todo in the first list")).not.toBeInTheDOM()
   );
 });
 

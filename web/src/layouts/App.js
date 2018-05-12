@@ -6,18 +6,18 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import createHistory from "history/createBrowserHistory";
-import { allListsQuery } from "shared/graphql/lists/allListsQuery";
-import { currentUserQuery } from "shared/graphql/users/currentUserQuery";
+import { allListsQuery } from "../queries/lists/allListsQuery";
+import { currentUserQuery } from "../queries/users/currentUserQuery";
 // import { Lists } from "../../api/lists/lists.js";
 // import UserMenu from "../components/UserMenu.jsx";
 import ListList from "../components/ListList";
 // import LanguageToggle from "../components/LanguageToggle.jsx";
 // import ConnectionNotification from "../components/ConnectionNotification.jsx";
 import Loading from "../components/Loading";
-import ListPageContainer from "../containers/ListPageContainer";
 import UserMenu from "../components/UserMenu";
 import AuthPageJoin from "../pages/AuthPageJoin";
 import AuthPageSignIn from "../pages/AuthPageSignIn";
+import ListPage from "../pages/ListPage";
 // import AuthPageSignIn from "../pages/AuthPageSignIn.jsx";
 // import AuthPageJoin from "../pages/AuthPageJoin.jsx";
 // import NotFoundPage from "../pages/NotFoundPage.jsx";
@@ -93,12 +93,8 @@ export default class App extends Component {
                   }) => {
                     const list = _.find(lists, l => l._id === listId);
                     if (list) {
-                      return (
-                        <ListPageContainer list={list} {...commonChildProps} />
-                      );
+                      return <ListPage list={list} {...commonChildProps} />;
                     }
-                    // return <Redirect to={`/lists/${lists[0]._id}`} />;
-
                     return <Loading key="loading" />;
                   }}
                 />

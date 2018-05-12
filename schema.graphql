@@ -18,17 +18,18 @@ type Mutation {
   LogoutUser: String
 }
 
+type TodoItem {
+  _id: ID
+  text: String
+  checked: Boolean
+}
+
 type List {
   _id: ID
   name: String
   incompleteCount: Int
   userId: ID
-}
-
-type TodoItem {
-  _id: ID
-  text: String
-  checked: Boolean
+  todos: [TodoItem]!
 }
 
 type User {

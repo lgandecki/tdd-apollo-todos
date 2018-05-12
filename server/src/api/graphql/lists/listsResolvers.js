@@ -18,5 +18,9 @@ export default {
         _id: listId,
         userId: context.user._id
       })
+  },
+  List: {
+    todos: (list, args, context) =>
+      context.todoItemsRepository.getItemsFor({ listId: list._id })
   }
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "react-apollo";
 import { Text, View } from "react-native";
-import { allListsQuery } from "shared/graphql/lists/allListsQuery";
+import { allListsQuery } from "web/src/queries/lists/allListsQuery";
 
 const PureApp = props => {
   const { loading, Lists } = props.data;

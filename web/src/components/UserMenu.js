@@ -28,7 +28,6 @@ class UserMenu extends BaseComponent {
   }
 
   async logout() {
-    console.log("logout");
     await this.props.client.mutate({
       mutation: logoutMutation
     });
@@ -38,7 +37,6 @@ class UserMenu extends BaseComponent {
   renderLoggedIn() {
     const { open } = this.state;
     const { user } = this.props;
-    console.log("Gandecki this.props", this.props.user);
     const { email } = user;
     const emailLocalPart = email.substring(0, email.indexOf("@"));
     return (

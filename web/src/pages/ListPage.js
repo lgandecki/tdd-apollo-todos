@@ -21,13 +21,9 @@ export default class ListPage extends BaseComponent {
   }
 
   render() {
-    const { list, todos } = this.props;
-    // const { list, listExists, todos } = myProps;
+    const { list } = this.props;
+    const { todos } = list;
     const { editingTodo } = this.state;
-
-    // if (!listExists) {
-    //   return <NotFoundPage menuOpen={this.props.menuOpen} />;
-    // }
 
     let Todos;
     if (!todos || !todos.length) {

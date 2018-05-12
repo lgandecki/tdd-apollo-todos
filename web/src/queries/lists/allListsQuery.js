@@ -7,6 +7,11 @@ export const allListsQuery = gql`
       name
       incompleteCount
       userId
+      todos {
+        _id
+        text
+        checked
+      }
     }
   }
 `;

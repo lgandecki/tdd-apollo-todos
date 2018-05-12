@@ -14,7 +14,6 @@ const createApp = async () => {
   const app = express();
   const db = await dbConnector();
 
-  console.log("Gandecki db", db);
   passport.serializeUser((user, cb) => cb(null, user));
   passport.deserializeUser((obj, cb) => cb(null, obj));
 

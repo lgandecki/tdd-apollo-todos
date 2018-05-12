@@ -4,15 +4,8 @@ import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import _ from "lodash";
 import classnames from "classnames";
+import { allListsQuery } from "../queries/lists/allListsQuery";
 import BaseComponent from "./BaseComponent";
-import { showTodoItemsForList } from "../containers/ListPageContainer";
-// import { displayError } from "../helpers/errors.js";
-
-// import {
-//   setCheckedStatus,
-//   updateText,
-//   remove
-// } from "../../api/todos/methods.js";
 
 const removeItemMutation = gql`
   mutation RemoveItem($itemId: ID!) {
@@ -122,12 +115,12 @@ class TodoItem extends BaseComponent {
         <Mutation
           mutation={removeItemMutation}
           variables={{ itemId: todo._id }}
-          refetchQueries={[
-            {
-              query: showTodoItemsForList,
-              variables: { listId: this.props.listId }
-            }
-          ]}
+          update={proxy => {
+            const data = proxy.readQuery({ query: allListsQuery });
+            const list = data.Lists.find(l => l._id === this.props.listId);
+            list.todos = _.reject(list.todos, t => t._id === todo._id);
+            proxy.writeQuery({ query: allListsQuery, data });
+          }}
         >
           {removeItem => (
             <a

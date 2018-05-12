@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
-import { currentUserQuery } from "shared/graphql/users/currentUserQuery";
+import { currentUserQuery } from "../queries/users/currentUserQuery";
 import BaseComponent from "../components/BaseComponent";
 import AuthPage from "./AuthPage";
 
