@@ -23,7 +23,9 @@
     "lodash": "^4.17.5",
     "mongodb": "^3.0.4",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "sequelize": "^4.37.7",
+    "tedious": "^2.3.1"
   },
   "devDependencies": {
     "apollo-cache-inmemory": "^1.1.10",
@@ -34,6 +36,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "jest": "^22.4.2",
     "nodemon": "^1.17.3",
+    "sequelize-mock": "^0.10.2",
+    "sqlite3": "^4.0.0",
     "tingodb-promise": "0.0.2"
   }
 }

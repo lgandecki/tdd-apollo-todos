@@ -1,45 +1,66 @@
-import MongoClient from "mongodb";
-import { MongoRepository } from "../../common/MongoRepository";
+import { map } from "lodash";
+import { MsSQLRepository } from "../../common/MsSQLRepository";
+// import Sequelize from "Sequelize"
+const Sequelize = require("sequelize");
 
-export class TodoItemsRepository extends MongoRepository {
+export class TodoItemsRepository extends MsSQLRepository {
   init() {
-    this.todoItemsCollection = this.db.collection("todoItems");
+    this.TodoItem = this.sequelize.define("TodoItem", {
+      text: Sequelize.STRING,
+      checked: Sequelize.BOOLEAN,
+      listId: Sequelize.STRING
+    });
+
+    return this.TodoItem.sync();
   }
 
-  getItemsFor({ listId }) {
-    return this.todoItemsCollection.find({ listId }).toArray();
+  async getItemsFor({ listId }) {
+    const all = await this.TodoItem.findAll({
+      where: {
+        listId
+      }
+    });
+    return map(all, "dataValues").map(item => ({
+      _id: item.id,
+      ...item
+    }));
   }
 
   removeItem({ itemId }) {
-    return this.todoItemsCollection.remove({ _id: itemId });
+    return this.TodoItem.destroy({ where: { id: itemId } });
   }
 
   async addTodo({ text, listId }) {
-    const returned = await this.todoItemsCollection.insert({
-      _id: new MongoClient.ObjectId().toString(),
+    const { dataValues } = await this.TodoItem.create({
       text,
       listId,
       checked: false
     });
-    return returned.ops[0];
+    return { _id: dataValues.id, ...dataValues };
   }
 
   async toggleTodoCheck({ itemId, checked }) {
-    await this.todoItemsCollection.update(
+    await this.TodoItem.update(
+      { checked },
       {
-        _id: itemId
-      },
-      { $set: { checked } }
+        where: {
+          id: itemId
+        }
+      }
     );
     return { _id: itemId, checked };
   }
 
   async renameTodo({ todoId, newText }) {
-    await this.todoItemsCollection.update(
-      { _id: todoId },
-      { $set: { text: newText } }
+    await this.TodoItem.update(
+      {
+        text: newText
+      },
+      {
+        where: { id: todoId }
+      }
     );
-    return { _id: todoId, text: newText };
+    return { id: todoId, text: newText };
   }
 }
 

@@ -28,7 +28,6 @@ test("returns todo items for a given list", async () => {
   const { TodoItems } = result.data;
 
   expect(TodoItems).toContainObject({
-    _id: "firstTodoId",
     text: "first todo in the second list",
     checked: true
   });

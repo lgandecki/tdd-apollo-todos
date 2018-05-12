@@ -62,6 +62,7 @@ test("Remove todo", async () => {
 
 // jest fake timers
 test("rename todo by typing", async () => {
+  // fail();
   const { getTodoByText, todoItemsRepository } = await loadedApp();
 
   const todoToChange = getTodoByText("first todo in the first list");
@@ -69,16 +70,18 @@ test("rename todo by typing", async () => {
 
   await wait(() =>
     expect(
-      todoItemsRepository.todoItemsCollection.findOne({
-        text: "different text now"
+      todoItemsRepository.TodoItem.findAll({
+        where: {
+          text: "different text now"
+        }
       })
-    ).resolves.not.toBeNull()
+    ).resolves.not.toEqual([])
   );
 });
 
-test("login to see private todo list", () => {});
-test("make a list private", () => {});
-test("create an account", () => {});
+// test("login to see private todo list", () => {});
+// test("make a list private", () => {});
+// test("create an account", () => {});
 
 // This way we verify that the way we create user is correct.
 // If we only tested registering user, and then used a mocked user in all other tests
