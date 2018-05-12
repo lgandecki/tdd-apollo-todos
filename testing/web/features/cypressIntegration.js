@@ -129,7 +129,7 @@ describe("working without the server", () => {
     queryByTitle("first list").should("not.exist");
     // should verify by the actual todo "first todo in the first list"
   });
-  it("allows the user to sign up and log out", () => {
+  it("allows the user to sign up and log out and log back in", () => {
     Simulate.click(getByText("Join"));
     type(getByPlaceholderText("Your Email"), "lgandecki@thebrain.pro");
     type(getByPlaceholderText("Password"), "MyPassword");
@@ -142,6 +142,7 @@ describe("working without the server", () => {
     Simulate.click(getByText("lgandecki"));
     Simulate.click(getByText(/Logout/));
     queryByText("first list").should("not.exist");
+    Simulate.click(getByText("Sign In"));
   });
 
   it("check and uncheck todo", () => {
