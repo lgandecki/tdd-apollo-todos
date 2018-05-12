@@ -2,7 +2,6 @@ import React from "react";
 import createHistory from "history/createBrowserHistory";
 import { ApolloProvider } from "react-apollo";
 import { renderIntoDocument } from "react-testing-library";
-// import Routes from "../../../../web/src/Routes";
 import App from "../../../../web/src/layouts/App";
 import { resolvers } from "../../../../server/src/api/graphql/resolvers";
 import gqlClient from "../../../common/gqlClient";

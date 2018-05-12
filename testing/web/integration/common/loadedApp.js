@@ -1,4 +1,4 @@
-import { Simulate } from "react-testing-library";
+import { fireEvent } from "react-testing-library";
 import "dom-testing-library/extend-expect";
 import "./linkMock";
 import "./sweetAlertMock";
@@ -23,8 +23,8 @@ export const loadedApp = async (...args) => {
   const deleteTodo = name => {
     const found = Array.from(
       queryByValue(name, container).parentNode.querySelectorAll("*")
-    ).filter(el => el.dataset.testid === "deleteItem");
-    Simulate.click(found);
+    ).filter(el => el.dataset.testid === "deleteItem")[0];
+    fireEvent.click(found);
   };
 
   await wait(() =>
