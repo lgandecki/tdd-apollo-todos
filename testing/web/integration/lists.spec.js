@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { Simulate } from "react-testing-library";
+import { fireEvent } from "react-testing-library";
 import { loadedApp } from "./common/loadedApp";
 import { loadApp } from "./common/loadApp";
 import { wait, type } from "./common/tools";
@@ -15,7 +15,7 @@ test("Rendering component connected to the server", async () => {
 
 test("Show todos for a selected list", async () => {
   const { getByText, getTodoByText } = await loadedApp();
-  Simulate.click(getByText("second list"));
+  fireEvent.click(getByText("second list"));
 
   await wait(() => getTodoByText("first todo in the second list"));
 });
@@ -23,7 +23,7 @@ test("Show todos for a selected list", async () => {
 test("Add list", async () => {
   const { getByText } = await loadedApp();
 
-  Simulate.click(getByText("New List"));
+  fireEvent.click(getByText("New List"));
 
   await wait(() => getByText("Empty List"));
 
@@ -38,7 +38,7 @@ test("Add Todo", async () => {
   } = await loadedApp();
 
   getByPlaceholderText("Type to add new tasks").value = "Newly Added Todo";
-  Simulate.submit(getByTestId("newTodoForm"));
+  fireEvent.submit(getByTestId("newTodoForm"));
 
   await wait(() => getTodoByText("Newly Added Todo"));
   expect(getByPlaceholderText("Type to add new tasks").value).toEqual("");
@@ -51,7 +51,7 @@ test("Add Todo", async () => {
 test("Remove todo", async () => {
   const { getByTestId, deleteTodo, queryTodoByText } = await loadedApp();
 
-  Simulate.click(getByTestId("deleteItem"));
+  fireEvent.click(getByTestId("deleteItem"));
   deleteTodo("first todo in the first list");
 
   await wait(() =>
@@ -97,18 +97,17 @@ test("Register user, logout, login", async () => {
     getByTitle
   } = await loadedApp();
 
-  Simulate.click(getByText("Join"));
+  fireEvent.click(getByText("Join"));
   type(getByPlaceholderText("Your Email"), "lgandecki@thebrain.pro");
   type(getByPlaceholderText("Password"), "MyPassword");
   type(getByPlaceholderText("Confirm Password"), "MyPassword");
-  Simulate.click(getByText("Join Now"));
-  Simulate.submit(getByText("Join Now"));
+  fireEvent.click(getByText("Join Now"));
   await wait(() => getByText("lgandecki"));
   await wait(() => expect(queryByText("Join Now")).not.toBeInTheDOM());
-  Simulate.click(getByTitle("Make list private"));
+  fireEvent.click(getByTitle("Make list private"));
   await wait(() => getByTitle("Make list public"));
-  Simulate.click(getByText("lgandecki"));
-  Simulate.click(getByText(/Logout/));
+  fireEvent.click(getByText("lgandecki"));
+  fireEvent.click(getByText(/Logout/));
   await wait(() => expect(queryByText("lgandecki")).not.toBeInTheDOM());
   await wait(() => expect(queryByText("first list")).not.toBeInTheDOM());
   // const users = await usersRepository.usersCollection.find().toArray();
@@ -126,4 +125,4 @@ test("Register user, logout, login", async () => {
 // Tests for when no lists exist
 // Tests for when no todo exist
 
-// Can I make the syntax .click and .type here, instead of changing cypress tests to use this type() and Simulate.click functions? I think I would have to use proxy.
+// Can I make the syntax .click and .type here, instead of changing cypress tests to use this type() and fireEvent.click functions? I think I would have to use proxy.

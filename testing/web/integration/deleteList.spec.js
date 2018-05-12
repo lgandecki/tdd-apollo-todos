@@ -1,4 +1,4 @@
-import { Simulate } from "react-testing-library";
+import { fireEvent } from "react-testing-library";
 import { wait } from "./common/tools";
 import { loadedApp } from "./common/loadedApp";
 
@@ -11,8 +11,8 @@ test("Delete Lists and redirects you to the first available from the list", asyn
   } = await loadedApp();
   expect(queryByText("first list")).toBeInTheDOM();
 
-  Simulate.click(queryByTitle("Delete list"));
-  Simulate.click(getByText("Delete it!"));
+  fireEvent.click(queryByTitle("Delete list"));
+  fireEvent.click(getByText("Delete it!"));
   await wait(() => expect(queryByText("first list")).not.toBeInTheDOM());
 
   await wait(() => getTodoByText("first todo in the second list"));
@@ -30,8 +30,8 @@ test("Do not delete list when cancelled", async () => {
 
   expect(queryByText("first list")).toBeInTheDOM();
 
-  Simulate.click(queryByTitle("Delete list"));
-  Simulate.click(getByText("Nope"));
+  fireEvent.click(queryByTitle("Delete list"));
+  fireEvent.click(getByText("Nope"));
 
   await sleep(100); // We wait to make sure that nothing gets deleted,
   // if we checked right away, there is a chance that UI didn't have enough time to react YET
