@@ -72,9 +72,9 @@ export default class ListHeader extends BaseComponent {
     this.deleteConfirmation = this.deleteConfirmation.bind(this);
   }
 
-  onListFormSubmit(event) {
+  onListFormSubmit(event, saveListMutation) {
     event.preventDefault();
-    this.saveList();
+    this.saveList(saveListMutation);
   }
 
   onListInputKeyUp(event) {
@@ -234,9 +234,14 @@ export default class ListHeader extends BaseComponent {
   renderEditingHeader() {
     const { list } = this.props;
     return (
-      <form className="list-edit-form" onSubmit={this.onListFormSubmit}>
-        <Mutation mutation={changeListNameMutation}>
-          {changeListName => (
+      <Mutation mutation={changeListNameMutation}>
+        {changeListName => (
+          <form
+            className="list-edit-form"
+            onSubmit={event => {
+              this.onListFormSubmit(event, changeListName);
+            }}
+          >
             <input
               type="text"
               name="name"
@@ -250,18 +255,18 @@ export default class ListHeader extends BaseComponent {
                 this.onListInputBlur(changeListName);
               }}
             />
-          )}
-        </Mutation>
-        <div className="nav-group right">
-          <a
-            className="nav-item"
-            onMouseDown={this.cancelEdit}
-            onClick={this.cancelEdit}
-          >
-            <span className="icon-close" title="Cancel" />
-          </a>
-        </div>
-      </form>
+            <div className="nav-group right">
+              <a
+                className="nav-item"
+                onMouseDown={this.cancelEdit}
+                onClick={this.cancelEdit}
+              >
+                <span className="icon-close" title="Cancel" />
+              </a>
+            </div>
+          </form>
+        )}
+      </Mutation>
     );
   }
 

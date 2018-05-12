@@ -20,7 +20,8 @@ const {
   getByTitle,
   queryByTitle,
   queryByText,
-  getByPlaceholderText
+  getByPlaceholderText,
+  getByTestId
 } = cy;
 
 function gqlClient({ context, resolvers: passedResolvers = [] }) {
@@ -79,6 +80,8 @@ const Simulate = {
     el.click();
   }
 };
+
+const fireEvent = Simulate;
 const wait = cb => cb();
 
 const type = (el, value) => {
@@ -139,5 +142,14 @@ describe("working without the server", () => {
     Simulate.click(getByText("lgandecki"));
     Simulate.click(getByText(/Logout/));
     queryByText("first list").should("not.exist");
+  });
+
+  it("check and uncheck todo", () => {
+    fireEvent.click(getByTitle("check-first todo in the first list"));
+    getByTestId("checkbox-first todo in the first list").should("be.checked");
+    fireEvent.click(getByTitle("check-first todo in the first list"));
+    getByTestId("checkbox-first todo in the first list").should(
+      "not.be.checked"
+    );
   });
 });

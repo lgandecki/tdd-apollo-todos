@@ -68,8 +68,9 @@ class TodoItem extends BaseComponent {
   }
 
   setTodoCheckStatus(event, toggleTodo) {
+    event.preventDefault();
     toggleTodo({
-      variables: { itemId: this.props.todo._id, checked: !event.target.checked }
+      variables: { itemId: this.props.todo._id, checked: event.target.checked }
     });
   }
 
@@ -93,13 +94,17 @@ class TodoItem extends BaseComponent {
       <div className={todoClass} data-testid={todo.text}>
         <Mutation mutation={toggleTodoCheckMutation}>
           {toggleTodo => (
-            <label className="checkbox" htmlFor={todo._id}>
+            <label
+              className="checkbox"
+              htmlFor={todo._id}
+              title={`check-${todo.text}`}
+            >
               <input
                 id={todo._id}
-                title={`check-${todo.text}`}
                 type="checkbox"
                 checked={todo.checked}
                 name="checked"
+                data-testid={`checkbox-${todo.text}`}
                 onChange={event => this.setTodoCheckStatus(event, toggleTodo)}
               />
               <span className="checkbox-custom" />

@@ -73,7 +73,6 @@ export default class App extends Component {
                 return <Loading key="loading" />;
               }
               const { CurrentUser } = data;
-              console.log("Gandecki CurrentUser", CurrentUser);
               return <UserMenu user={CurrentUser} />;
             }}
           </Query>
@@ -86,7 +85,11 @@ export default class App extends Component {
               <Switch location={location}>
                 <Route
                   path="/lists/:listId"
-                  render={({ match: { params: { listId } } }) => {
+                  render={({
+                    match: {
+                      params: { listId }
+                    }
+                  }) => {
                     const list = _.find(lists, l => l._id === listId);
                     if (list) {
                       return (

@@ -1,7 +1,7 @@
 import React from "react";
 import createHistory from "history/createBrowserHistory";
 import { ApolloProvider } from "react-apollo";
-import { render } from "react-testing-library";
+import { renderIntoDocument } from "react-testing-library";
 // import Routes from "../../../../web/src/Routes";
 import App from "../../../../web/src/layouts/App";
 import { resolvers } from "../../../../server/src/api/graphql/resolvers";
@@ -30,14 +30,12 @@ export const loadApp = async (passedContext = {}, initialPath = "/") => {
       logOut: () => {
         delete context.user._id;
         delete context.user.email;
-        // delete context.user.password;
-        console.log("Gandecki context.user", context.user);
       }
     },
     ...passedContext
   };
   return {
-    rendered: render(
+    rendered: renderIntoDocument(
       <ApolloProvider
         client={gqlClient({
           context,
