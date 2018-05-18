@@ -1,4 +1,4 @@
-const browserify = require("@cypress/browserify-preprocessor");
+const browserify = require("browserify-preprocessor-babel7");
 
 module.exports = on => {
   const options = browserify.defaultOptions;
