@@ -6,6 +6,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import createHistory from "history/createBrowserHistory";
+import gql from "graphql-tag";
 import { allListsQuery } from "../queries/lists/allListsQuery";
 import { currentUserQuery } from "../queries/users/currentUserQuery";
 // import { Lists } from "../../api/lists/lists.js";
@@ -22,6 +23,16 @@ import ListPage from "../pages/ListPage";
 // import AuthPageJoin from "../pages/AuthPageJoin.jsx";
 // import NotFoundPage from "../pages/NotFoundPage.jsx";
 
+const LISTS_SUBSCRIPTION = gql`
+  subscription AddedList {
+    AddedList {
+      _id
+      name
+      incompleteCount
+      userId
+    }
+  }
+`;
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +71,7 @@ export default class App extends Component {
     return redirect;
   }
 
-  renderContent(location, lists) {
+  renderContent(location, lists, subscribeToNewLists) {
     const commonChildProps = {
       menuOpen: this.state.menuOpen
     };
@@ -77,7 +88,7 @@ export default class App extends Component {
               return <UserMenu user={CurrentUser} />;
             }}
           </Query>
-          <ListList lists={lists} />
+          <ListList lists={lists} subscribeToNewLists={subscribeToNewLists} />
         </section>
         <div className="content-overlay" onClick={this.closeMenu} />
         <div id="content-container">
@@ -119,16 +130,32 @@ export default class App extends Component {
     return (
       <Router history={this.props.history}>
         <Query query={allListsQuery}>
-          {({ loading, data }) => {
+          {({ subscribeToMore, loading, data, error }) => {
+            if (error) {
+              console.log("Gandecki error", error);
+            }
             if (loading) {
               return <Loading key="loading" />;
             }
+            const subscribeToNewLists = () =>
+              subscribeToMore({
+                document: LISTS_SUBSCRIPTION,
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data.AddedList) return prev;
+                  const newList = subscriptionData.data.AddedList;
+                  const returned = Object.assign({}, prev, {
+                    Lists: [...prev.Lists, { ...newList, todos: [] }]
+                  });
+                  return returned;
+                }
+              });
+
             const { Lists } = data;
             return (
               <Route
                 render={({ location }) =>
                   this.renderRedirect(location, Lists) ||
-                  this.renderContent(location, Lists)
+                  this.renderContent(location, Lists, subscribeToNewLists)
                 }
               />
             );

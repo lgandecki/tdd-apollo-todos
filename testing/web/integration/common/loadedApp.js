@@ -6,17 +6,11 @@ import { loadApp } from "./loadApp";
 import { wait } from "./tools";
 
 export const loadedApp = async (...args) => {
-  const loaded = await loadApp(args);
+  const loaded = await loadApp(...args);
   const { rendered } = loaded;
-  const { container, queryByValue } = rendered;
+  const { container, queryByValue, getByValue } = rendered;
 
-  const getTodoByText = todoText => {
-    const el = queryByValue(todoText);
-    if (!el) {
-      throw new Error("Todo not visible in the dom");
-    }
-    return el;
-  };
+  const getTodoByText = todoText => getByValue(todoText);
 
   const queryTodoByText = todoText => queryByValue(todoText);
 

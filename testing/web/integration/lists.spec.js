@@ -147,10 +147,6 @@ test("Register logout login", async () => {
   await wait(() => expect(queryByText("first list")).toBeInTheDOM());
 });
 
-// test that you can't mess with not your lists/todo (in case of todo I think we need to check the owner of the list)
-// do this mostly in server - as those things are not easy from the UI - should not be even possible to be honest.
-// Perfect examples of server tests
-
 // add subscriptions. Test it by calling a mutation as someone else (fake context)
 
 // Problems with ID

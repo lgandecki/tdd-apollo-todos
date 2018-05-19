@@ -18,6 +18,10 @@ type Mutation {
   LogoutUser: String
 }
 
+type Subscription {
+  AddedList: List
+}
+
 type TodoItem {
   _id: ID
   text: String

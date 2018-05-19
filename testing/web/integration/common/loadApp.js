@@ -11,7 +11,8 @@ import getTodoItemsWithDefaults from "../../../common/getTodoItemsWithDefaults";
 import getUsersWithDefaults from "../../../common/getUsersWithDefaults";
 
 export const loadApp = async (passedContext = {}, initialPath = "/") => {
-  const listsRepository = await getListsWithDefaults();
+  const listsRepository =
+    passedContext.listsRepository || (await getListsWithDefaults());
   const todoItemsRepository = await getTodoItemsWithDefaults();
   const usersRepository = await getUsersWithDefaults();
   const history = createHistory();

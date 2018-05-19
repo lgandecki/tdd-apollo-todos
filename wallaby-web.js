@@ -13,7 +13,7 @@ module.exports = wallaby => ({
     "testing/common/**/*.js",
     "babel.config.js"
   ],
-  tests: ["testing/web/integration/*.spec.js"],
+  tests: ["testing/web/integration/listsSubscription.spec.js"],
   compilers: { "**/*.js": wallaby.compilers.babel() },
   env: { type: "node" },
   setup() {

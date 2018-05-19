@@ -16,3 +16,7 @@ type Mutation {
   ChangeListName(listId: ID!, newName: String!): List
   ToggleListPrivacy(listId: ID!): List
 }
+
+type Subscription {
+  AddedList: List
+}

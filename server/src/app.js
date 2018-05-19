@@ -1,7 +1,10 @@
 import express, { json, urlencoded } from "express";
+import { createServer } from "http";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+import { execute, subscribe } from "graphql";
 import schema from "./api/graphql/schema";
 import { dbConnector } from "./api/common/MongoRepository";
 import { repositories } from "./api/graphql/repositories";
@@ -68,6 +71,42 @@ const createApp = async () => {
       endpointURL: "/graphql"
     })
   );
+
+  const WS_PORT = 5000;
+
+  // Create WebSocket listener server
+  const websocketServer = createServer((request, response) => {
+    response.writeHead(404);
+    response.end();
+  });
+
+  // Bind it to port and start listening
+  websocketServer.listen(WS_PORT, () =>
+    console.log(
+      `Websocket Server is now running on http://localhost:${WS_PORT}`
+    )
+  );
+
+  SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+      onConnect: con => {
+        console.log("Gandecki con", con);
+        return {
+          ...repositories,
+          user: con.user,
+          con
+        };
+      }
+    },
+    {
+      server: websocketServer,
+      path: "/graphql"
+    }
+  );
+
   return { app };
 };
 

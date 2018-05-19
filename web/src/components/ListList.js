@@ -34,6 +34,10 @@ export default class ListList extends BaseComponent {
   //   this.redirectTo(`/lists/${listId}`);
   // }
 
+  async componentDidMount() {
+    await this.props.subscribeToNewLists();
+  }
+
   render() {
     const { lists } = this.props;
 
