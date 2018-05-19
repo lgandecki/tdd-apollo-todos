@@ -3,6 +3,7 @@
 [] context in the subscription mocked server
 
 [] verify whether the user is passed to the subscription context
+ https://stackoverflow.com/questions/45574592/apollo-graphql-server-setting-context-to-handle-requests-triggered-by-a-fired-s
 [] add filters so you don't get information about todos/lists that you shouldn't see (based on context)
 
 [] can we create generic subscriptions for CRUD operations?
