@@ -33,6 +33,13 @@ const LISTS_SUBSCRIPTION = gql`
     }
   }
 `;
+
+const LIST_REMOVED_SUBSCRIPTION = gql`
+  subscription RemovedList {
+    RemovedList
+  }
+`;
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -137,18 +144,31 @@ export default class App extends Component {
             if (loading) {
               return <Loading key="loading" />;
             }
-            const subscribeToNewLists = () =>
+            const subscribeToNewLists = () => {
               subscribeToMore({
                 document: LISTS_SUBSCRIPTION,
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data.AddedList) return prev;
                   const newList = subscriptionData.data.AddedList;
-                  const returned = Object.assign({}, prev, {
+                  if (prev.Lists.find(l => l._id === newList._id)) {
+                    return prev;
+                  }
+                  return {
+                    ...prev,
                     Lists: [...prev.Lists, { ...newList, todos: [] }]
-                  });
-                  return returned;
+                  };
                 }
               });
+              subscribeToMore({
+                document: LIST_REMOVED_SUBSCRIPTION,
+                updateQuery: (prev, { subscriptionData }) => ({
+                  ...prev,
+                  Lists: prev.Lists.filter(
+                    l => l._id !== subscriptionData.data.RemovedList
+                  )
+                })
+              });
+            };
 
             const { Lists } = data;
             return (
@@ -167,7 +187,7 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-  history: PropTypes.func
+  history: PropTypes.object
 };
 
 App.defaultProps = {

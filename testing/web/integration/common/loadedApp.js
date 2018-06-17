@@ -1,7 +1,5 @@
 import { fireEvent } from "react-testing-library";
 import "dom-testing-library/extend-expect";
-import "./linkMock";
-import "./sweetAlertMock";
 import { loadApp } from "./loadApp";
 import { wait } from "./tools";
 

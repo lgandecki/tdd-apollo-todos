@@ -42,7 +42,6 @@ class JoinPage extends BaseComponent {
     if (Object.keys(errors).length) {
       return;
     }
-    console.log("Gandecki email", email);
     await this.props.client.mutate({
       mutation: addUserMutation,
       variables: {

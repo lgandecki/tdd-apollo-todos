@@ -43,7 +43,7 @@ export default class ListList extends BaseComponent {
 
     return (
       this.renderRedirect() || (
-        <div className="list-todos">
+        <div className="list-todos" data-testid="list-todos">
           <Mutation
             mutation={addListMutation}
             refetchQueries={[{ query: allListsQuery }]}

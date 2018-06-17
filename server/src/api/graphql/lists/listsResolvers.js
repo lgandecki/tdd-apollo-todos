@@ -1,4 +1,4 @@
-import { PubSub } from "graphql-subscriptions";
+import { PubSub, withFilter } from "graphql-subscriptions";
 
 const pubsub = new PubSub();
 
@@ -21,11 +21,21 @@ export default {
         newName,
         user: context.user
       }),
-    ToggleListPrivacy: (_, { listId }, context) =>
-      context.listsRepository.toggleListPrivacy({
+    ToggleListPrivacy: async (_, { listId }, context) => {
+      const list = await context.listsRepository.toggleListPrivacy({
         _id: listId,
         userId: context.user._id
-      })
+      });
+      if (list.userId) {
+        pubsub.publish("listRemoved", {
+          listId: list._id,
+          ownerId: list.userId
+        });
+      } else {
+        pubsub.publish("listAdded", list);
+      }
+      return list;
+    }
   },
   List: {
     todos: (list, args, context) =>
@@ -35,6 +45,13 @@ export default {
     AddedList: {
       resolve: payload => payload,
       subscribe: () => pubsub.asyncIterator("listAdded")
+    },
+    RemovedList: {
+      resolve: payload => payload.listId,
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("listRemoved"),
+        (payload, variables, { user }) => payload.ownerId !== user._id
+      )
     }
   }
 };

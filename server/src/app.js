@@ -1,13 +1,14 @@
 import express, { json, urlencoded } from "express";
-import { createServer } from "http";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
-import { SubscriptionServer } from "subscriptions-transport-ws";
+import { createServer } from "http";
+import { SubscriptionServer } from "subscriptions-transport-custom-ws";
 import { execute, subscribe } from "graphql";
 import schema from "./api/graphql/schema";
 import { dbConnector } from "./api/common/MongoRepository";
 import { repositories } from "./api/graphql/repositories";
+import prepareGetUserFromPassport from "./prepareGetUserFromPassport";
 
 const { graphqlExpress, graphiqlExpress } = require("graphql-server-express");
 
@@ -18,18 +19,31 @@ const createApp = async () => {
   const db = await dbConnector();
 
   passport.serializeUser((user, cb) => cb(null, user));
-  passport.deserializeUser((obj, cb) => cb(null, obj));
+  passport.deserializeUser(({ password, ...userDeserialized }, cb) => {
+    cb(null, userDeserialized);
+  });
 
+  const key = "connect.sid";
+  const store = new MongoStore({ db });
+  const secret = process.env.SESSION_SECRET || "development secret";
   app.use(
     session({
-      store: new MongoStore({ db }),
-      secret: process.env.SESSION_SECRET || "development secret",
+      key,
+      store,
+      secret,
       resave: false,
       saveUninitialized: false
     })
   );
   app.use(passport.initialize());
   app.use(passport.session());
+
+  const getUserFromPassport = prepareGetUserFromPassport({
+    key,
+    secret,
+    store,
+    passport
+  });
 
   // FIXES CORS ERROR - LEAVING THIS AND THE LOGIC IN corsOption commented out
   // so if you need to block other domains, you have an example
@@ -75,10 +89,7 @@ const createApp = async () => {
   const WS_PORT = 5000;
 
   // Create WebSocket listener server
-  const websocketServer = createServer((request, response) => {
-    response.writeHead(404);
-    response.end();
-  });
+  const websocketServer = createServer(app);
 
   // Bind it to port and start listening
   websocketServer.listen(WS_PORT, () =>
@@ -92,14 +103,15 @@ const createApp = async () => {
       schema,
       execute,
       subscribe,
-      onConnect: con => {
-        console.log("Gandecki con", con);
-        return {
-          ...repositories,
-          user: con.user,
-          con
-        };
-      }
+      onOperation: (message, params, webSocket) =>
+        // console.log("Gandecki params", params);
+        // console.log("Gandecki message", message);
+        getUserFromPassport(webSocket.upgradeReq)
+          .then(user => ({
+            ...params,
+            context: { user }
+          }))
+          .catch(() => ({ ...params, context: { user: {} } }))
     },
     {
       server: websocketServer,
