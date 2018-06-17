@@ -1,6 +1,6 @@
-# import * from "lists/lists.graphql"
-# import * from "todoItems/todoItems.graphql"
-# import * from "users/users.graphql"
+# import Query.*, Mutation.*, Subscription.*, * from "lists/lists.graphql"
+# import Query.*, Mutation.*, * from "todoItems/todoItems.graphql"
+# import Query.*, Mutation.*, * from "users/users.graphql"
 
 schema {
     query: Query
