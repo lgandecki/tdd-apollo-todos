@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "BABEL_ENV=test jest",
-    "start": "NODE_PATH='src' nodemon src/startup.js --watch src --exec babel-node -e .graphql,.js"
+    "start": "NODE_PATH='src' nodemon src/startup.js --watch src --exec babel-node -e .graphql,.js",
+    "babel:process": "BABEL_ENV=test babel src --out-dir dist --watch",
+    "start:small": "BABEL_ENV=test pm2 start dist/startup.js -i 1"
   },
   "author": "",
   "license": "ISC",
@@ -32,12 +34,13 @@
     "subscriptions-transport-ws": "^0.9.9"
   },
   "devDependencies": {
-    "@babel/node": "^7.0.0-beta.47",
-    "@babel/preset-env": "^7.0.0-beta.47",
+    "@babel/node": "^7.0.0-beta.41",
+    "@babel/preset-env": "^7.0.0-beta.41",
+    "@babel/core": "^7.0.0-beta.41",
     "apollo-cache-inmemory": "^1.1.10",
     "apollo-client": "^2.2.6",
     "apollo-link-schema": "^1.0.6",
-    "babel-cli": "7.0.0-beta.3",
+    "@babel/cli": "^7.0.0-beta.41",
     "jest": "^22.4.2",
     "nodemon": "^1.17.3",
     "tingodb-promise": "0.0.2"
