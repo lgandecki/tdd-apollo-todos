@@ -27,21 +27,6 @@ jobs:
             - node_modules
           key: v1-test-dependencies-{{ checksum "package.json" }}
 
-### SHARED PACKAGE
-      - restore_cache:
-          keys:
-            - npm-shared-deps-{{ checksum "shared/package.json" }}
-
-      - run:
-          name: Install shared related packages
-          working_directory: shared/
-          command: npm install
-
-      - save_cache:
-          key: npm-shared-deps-{{ checksum "shared/package.json" }}
-          paths:
-            - shared/node_modules
-
 ### SERVER PACKAGE
 #      - restore_cache:
 #          keys:
@@ -90,26 +75,12 @@ jobs:
           command: npm start
           background: true
 
-### MOBILE PACKAGE
-      - restore_cache:
-          keys:
-            - npm-mobile-deps-{{ checksum "mobile/package.json" }}
-
-      - run:
-          name: Install mobile packages
-          working_directory: mobile/
-          command: npm install
-
-      - save_cache:
-          key: npm-mobile-deps-{{ checksum "mobile/package.json" }}
-          paths:
-            - mobile/node_modules
 
 ### ALL TOGETHER
       - run: npm run eslint:all
 
       - run:
-          name: Integration test for web/mobile/server
+          name: Integration test for web/server
           command: npm run test:integration:all
 
       - run:

@@ -139,7 +139,6 @@ export default class ListHeader extends BaseComponent {
   }
 
   createTodo(event, addTodo) {
-    console.log("on create I guess");
     event.preventDefault();
     const { newTodoInput } = this;
     const newTodoText = newTodoInput.value;

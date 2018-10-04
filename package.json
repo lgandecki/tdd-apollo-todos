@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "eslint": "eslint",
-    "eslint:all": "eslint testing/**/*.js server/src/**/*.js web/src/**/*.js shared/graphql/**/*.js",
-    "clean:all": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules && rm -rf shared/node_modules",
-    "install:all": "npm install && pushd shared && npm install && pushd ../web && npm install && pushd ../server && npm install",
+    "eslint:all": "eslint testing/**/*.js server/src/**/*.js web/src/**/*.js",
+    "clean:all": "rm -rf node_modules && rm -rf web/node_modules && rm -rf server/node_modules",
+    "install:all": "npm install && pushd web && npm install && pushd ../server && npm install",
     "createDefaultDB": "NODE_ENV=staging babel-node ./testing/common/createDefaultDB.js",
     "startLocalDB": "docker stop todos-apollo-mongo 2> /dev/null|| true && docker rm todos-apollo-mongo 2> /dev/null || true && docker run -p 27017:27017 --name todos-apollo-mongo -d mongo",
     "precommit": "npm run generateSchema && git add ./schema.graphql && lint-staged",
